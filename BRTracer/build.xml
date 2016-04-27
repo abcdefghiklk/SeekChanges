@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="BRTracer" default="build" basedir=".">
+	<property name="src" value="src"/>
+	<property name="dest" value="classes"/>
+	<property name="outputJar" value="BRTracer.jar"/>
+	<target name="init">
+		<mkdir dir="${dest}"/>
+	</target>
+	<target name="compile" depends="init">
+		<javac srcdir="${src}" destdir="${dest}" includeantruntime="false">
+			<classpath>
+				<pathelement location="lib/wvtool.jar"/>
+				<pathelement location="lib/args4j-2.0.6.jar"/>
+				<pathelement location="lib/contenttype-3.2.0-v20060603.jar"/>
+				<pathelement location="lib/dom4j-1.6.1.jar"/>
+				<pathelement location="lib/lucene-core-2.9.4.jar"/>
+				<pathelement location="lib/mysql-connector-java-5.1.13-bin.jar"/>
+				<pathelement location="lib/org.eclipse.core.jobs_3.4.1.R34x_v20081128.jar"/>
+				<pathelement location="lib/org.eclipse.core.resources_3.4.2.R34x_v20090126.jar"/>	
+				<pathelement location="lib/org.eclipse.core.runtime_3.4.0.v20080512.jar"/>
+				<pathelement location="lib/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar"/>
+				<pathelement location="lib/org.eclipse.jdt.core_3.4.4.v_894_R34x.jar"/>
+				<pathelement location="lib/org.eclipse.jface_3.4.1.M20080827-2000.jar"/>
+				<pathelement location="lib/org.eclipse.osgi_3.4.2.R34x_v20080826-1230.jar"/>
+				<pathelement location="lib/org.eclipse.text_3.4.0.v20080605-1800.jar"/>
+				<pathelement location="lib/preferences-3.2.100-v20070522.jar"/>
+			</classpath>
+		</javac>
+	</target>
+		<target name="build" depends="compile">
+		<jar jarfile="${outputJar}" basedir="${dest}"/>
+	</target>
+	<!--
+	<target name="run" depends="build">
+		<java classname="test.ant.HelloWorld" classpath="${hello_jar}"/>
+	</target>-->
+	<target name="clean">
+		<delete dir="${dest}" />
+	</target>
+	<!--
+	<target name="rerun" depends="clean,run">
+		<ant target="clean" />
+		<ant target="run" />
+	</target>
+	-->
+</project>
