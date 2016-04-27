@@ -1,0 +1,1 @@
+pig 1717 pig call setpartitionfilt schema null getpartitionkei asf jira write loader work hive style partit log type1 daydat 2010 11 01 loader schema upfront user add script claus problem user defin schema loader loader return schema loader partit kei pig partit kei schema null pig call loadmetadata getpartitionkei method setpartitionfilt method

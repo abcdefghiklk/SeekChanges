@@ -1,0 +1,1 @@
+wicket 3969 add cdi integr asf jira introduc integr cdi includ inject compon cdi depend convers scope propag page

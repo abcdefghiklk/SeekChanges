@@ -1,0 +1,1 @@
+felix 3124 framework implement osgi r4 3 properti instal bundl bsn version asf jira osgi r4 3 spec defin org osgi framework bsnversion framework configur properti control instal duplic bsn version pair error support singl default behavior multipl enabl duplic

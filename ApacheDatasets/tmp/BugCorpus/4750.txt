@@ -1,0 +1,1 @@
+wicket 4750 abstractdefaultajaxbehavior getcallbackfunct add event attribut asf jira getcallbackfunct eventajaxbehavior add 'e' paramet ajax attribut callback function return method regist event handler perform ajax call event

@@ -1,0 +1,92 @@
+***************
+*** 2794,2876 ****
+  
+      }
+      
+-     
+-     private class RearrangeAdjuster extends MROpPlanVisitor {
+- 
+-         RearrangeAdjuster(MROperPlan plan) {
+-             super(plan, new DepthFirstWalker<MapReduceOper, MROperPlan>(plan));
+-         }
+- 
+-         @Override
+-         public void visitMROp(MapReduceOper mr) throws VisitorException {
+-             // Look for map reduce operators whose reduce starts in a local
+-             // rearrange.  If it has a successor and that predecessor's map
+-             // plan is just a load, push the porearrange to the successor.
+-             // Else, throw an error.
+-             if (mr.reducePlan.isEmpty()) return;
+-             List<PhysicalOperator> mpLeaves = mr.reducePlan.getLeaves();
+-             if (mpLeaves.size() != 1) {
+-                 int errCode = 2024; 
+-                 String msg = "Expected reduce to have single leaf. Found " + mpLeaves.size() + " leaves.";
+-                 throw new MRCompilerException(msg, errCode, PigException.BUG);
+-             }
+-             PhysicalOperator mpLeaf = mpLeaves.get(0);
+-             if (!pigContext.inIllustrator)
+-             if (!(mpLeaf instanceof POStore)) {
+-                 int errCode = 2025;
+-                 String msg = "Expected leaf of reduce plan to " +
+-                     "always be POStore. Found " + mpLeaf.getClass().getSimpleName();
+-                 throw new MRCompilerException(msg, errCode, PigException.BUG);
+-             }
+-             List<PhysicalOperator> preds =
+-                 mr.reducePlan.getPredecessors(mpLeaf);
+-             if (preds == null) return;
+-             if (preds.size() > 1) {
+-                 int errCode = 2030;
+-                 String msg ="Expected reduce plan leaf to have a single predecessor. Found " + preds.size() + " predecessors.";
+-                 throw new MRCompilerException(msg, errCode, PigException.BUG);
+-             }
+-             PhysicalOperator pred = preds.get(0);
+-             if (!(pred instanceof POLocalRearrange)) return;
+- 
+-             // Next question, does the next MROper have an empty map?
+-             List<MapReduceOper> succs = mPlan.getSuccessors(mr);
+-             if (succs == null) {
+-                 int errCode = 2031;
+-                 String msg = "Found map reduce operator with POLocalRearrange as"
+-                     + " last oper but with no succesor.";
+-                 throw new MRCompilerException(msg, errCode, PigException.BUG);
+-             }
+-             if (succs.size() > 1) {
+-                 int errCode = 2032;
+-                 String msg = "Expected map reduce operator to have a single successor. Found " + succs.size() + " successors.";
+-                 throw new MRCompilerException(msg, errCode, PigException.BUG);
+-             }
+-             MapReduceOper succ = succs.get(0);
+-             List<PhysicalOperator> succMpLeaves = succ.mapPlan.getLeaves();
+-             List<PhysicalOperator> succMpRoots = succ.mapPlan.getRoots();
+-             if (succMpLeaves == null || succMpLeaves.size() > 1 ||
+-                     succMpRoots == null || succMpRoots.size() > 1 ||
+-                     succMpLeaves.get(0) != succMpRoots.get(0)) {
+-             		messageCollector.collect("Expected to find subsequent map " +
+-                     "with just a load, but didn't",
+-                     MessageType.Warning, PigWarning.DID_NOT_FIND_LOAD_ONLY_MAP_PLAN);
+-                 return;
+-             }
+-             PhysicalOperator load = succMpRoots.get(0);
+- 
+-             try {
+-                 mr.reducePlan.removeAndReconnect(pred);
+-                 succ.mapPlan.add(pred);
+-                 succ.mapPlan.connect(load, pred);
+-             } catch (PlanException pe) {
+-                 int errCode = 2033;
+-                 String msg = "Problems in rearranging map reduce operators in plan.";
+-                 throw new MRCompilerException(msg, errCode, PigException.BUG, pe);
+-             }
+-         }
+-     }
+- 
+      private class LimitAdjuster extends MROpPlanVisitor {
+          ArrayList<MapReduceOper> opsToAdjust = new ArrayList<MapReduceOper>();  
+  
+--- 2808,2813 ----
+  
+      }
+      
+      private class LimitAdjuster extends MROpPlanVisitor {
+          ArrayList<MapReduceOper> opsToAdjust = new ArrayList<MapReduceOper>();  
+  

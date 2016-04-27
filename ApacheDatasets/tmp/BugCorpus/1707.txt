@@ -1,0 +1,1 @@
+pig 1707 pig build pull altern maven repo enabl build newer hadoop version asf jira pig build pull jar http repo1 maven org maven2 depend restrict build releas hadoop version depend good pig build configur maven repo url default maven org repo

@@ -1,0 +1,1 @@
+felix 3094 main launcher attempt restart framework system bundl updat asf jira launcher start framework call framework waitforstop return frameworkev type framework stop system bundl updat refresh spec framework restart technic restart jvm process support weak restart simpli launcher restart framework time waitforstop exit frameworkev stop updat

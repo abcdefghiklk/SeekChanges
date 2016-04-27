@@ -1,0 +1,1 @@
+wicket 4743 serializingobjectsizeofstrategi framework serial asf jira default implement serializingobjectsizeofstrategi frameworkset objectnotserializableexcept serial custom behaviour

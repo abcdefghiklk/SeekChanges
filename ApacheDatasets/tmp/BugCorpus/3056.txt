@@ -1,0 +1,1 @@
+felix 3056 framework implement osgi r4 3 event listen servic registri hook asf jira osgi r4 3 spec introduc servic registri hook call eventlistenerhook replac eventhook essenti fine grain version eventhook control precis listen oper listen bundl

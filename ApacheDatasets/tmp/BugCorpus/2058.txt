@@ -1,0 +1,1 @@
+pig 2058 macro miss return claus good error messag asf jira queri defin test out1 out2 load 'x' int int filter 3 20 pig error messag syntax error unexpect symbol ' ' previous mismatch input ' ' expect return previou messag meaning

@@ -1,0 +1,1 @@
+pig 1758 deep cast complex type asf jira pig handl deep cast bag bag tupl tupl script produc desir result load '1 txt' a0 bag tupl i0 doubl foreach gener bag tupl int a0 dump result tupl int insid tupl bag pig 613 fix case cast bytearrai bag tupl complex type includ type bag bag tupl tupl effect

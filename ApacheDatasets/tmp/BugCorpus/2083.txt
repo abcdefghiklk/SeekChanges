@@ -1,0 +1,1 @@
+pig 2083 bincond error 1025 invalid field project null asf jira regress 9 load '1 txt' a0 a1 foreach gener a0 0 null 2 explain error 1025 invalid field project project field null exist schema

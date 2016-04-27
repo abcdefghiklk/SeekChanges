@@ -1,0 +1,1 @@
+pig 2049 pig displai tokenmgrerror messag consist parser asf jira org apach pig tool pigscript parser tokenmgrerror pig log error 1000 error pars lexic error line 5 column 0 org apach pig tool paramet tokenmgrerror pig log error 2998 unhandl intern error lexic error line 10 column 0 error code 1000

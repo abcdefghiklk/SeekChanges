@@ -1,0 +1,1 @@
+pig 1782 add abil load data column famili hbasestorag asf jira nice load column column famili short hand syntax cpumetr load 'hbase systemmetrics' org apach pig backend hadoop hbase hbasestorag 'cpu ' ' loadkey' assum column cpu sy 0 cpu sy 1 cpu user 0 cpu user 1 cpu column famili cpumetr rowkei cpu sy 0 cpu sy 1 cpu user 0 cpu user 1

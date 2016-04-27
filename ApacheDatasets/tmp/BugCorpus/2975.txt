@@ -1,0 +1,1 @@
+felix 2975 framework implement osgi r4 3 framework start level object asf jira osgi r4 3 spec deprec startlevel servic replac interfac frameworkstartlevel bundlestartlevel bundl adapt method function equival startlevel servic access

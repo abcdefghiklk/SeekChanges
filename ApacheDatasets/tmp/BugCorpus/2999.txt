@@ -1,0 +1,1 @@
+felix 2999 framework osgi r4 3 number type trim evalu filter asf jira previou spec clear strict lenient framework implement coerc type evalu filter string felix framework strict massag pars data coerc type trim string coerc number spec string represent number type trim attempt coercion

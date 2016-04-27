@@ -1,0 +1,1 @@
+wicket 4748 improv wickettest find ajaxbehavior event asf jira wicket 6 0 pass event abstractdefaultajaxbehavior ajaxrequestattribut seteventnam string jquery' specif compound event ajaxeventbehavior eventon eventtwo wickettesterhelp findajaxeventbehavior work ajaxeventbehavior special full event test eventon eventtwo

@@ -1,0 +1,1 @@
+pig 946 combin optim optim limit group foreach asf jira script combin optim load ' user pig test data singlefil studenttab10k' group 1 foreach gener group avg 2 limit 10 dump

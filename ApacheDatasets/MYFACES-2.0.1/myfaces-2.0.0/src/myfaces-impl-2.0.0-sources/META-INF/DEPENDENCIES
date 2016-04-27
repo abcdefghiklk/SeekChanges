@@ -1,0 +1,35 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+Apache MyFaces JSF-2.0 Core Impl
+
+
+From: 'an unknown organization'
+  - Unnamed - commons-beanutils:commons-beanutils:jar:1.7.0  commons-beanutils:commons-beanutils:jar:1.7.0
+
+  - Expression Language API (2.1 Maintenance Release)  javax.el:el-api:jar:2.2
+
+  - Bean Validation API  javax.validation:validation-api:jar:1.0.CR3
+    License: Apache License, Version 2.0  (license.txt)
+
+From: 'The Apache Software Foundation' (http://jakarta.apache.org)
+  - Codec (http://jakarta.apache.org/commons/codec/) commons-codec:commons-codec:jar:1.3
+    License: The Apache Software License, Version 2.0  (/LICENSE.txt)
+  - Collections (http://jakarta.apache.org/commons/collections/) commons-collections:commons-collections:jar:3.2
+    License: The Apache Software License, Version 2.0  (/LICENSE.txt)
+  - Digester (http://jakarta.apache.org/commons/digester/) commons-digester:commons-digester:jar:1.8
+    License: The Apache Software License, Version 2.0  (/LICENSE.txt)
+  - Discovery (http://jakarta.apache.org/commons/${pom.artifactId.substring(8)}/) commons-discovery:commons-discovery:jar:0.4
+    License: The Apache Software License, Version 2.0  (/LICENSE.txt)
+
+From: 'The Apache Software Foundation' (http://www.apache.org/)
+  - Commons Logging (http://commons.apache.org/logging) commons-logging:commons-logging:jar:1.1.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache Myfaces JSF Core-2.0 API (http://myfaces.apache.org/core20/myfaces-api) org.apache.myfaces.core:myfaces-api:jar:2.0.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+
+
+

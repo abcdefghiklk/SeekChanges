@@ -1,0 +1,1 @@
+pig 1924 csv loader store handl newlin field excel csv featur asf jira csvexcelstorag combin load store csv encod data handl newlin field escap doubl doubl field embed field delimit newlin handl option control paramet modul offer option output window style newlin crlf unix lf csv relat syntax decis made match excel 2007 modul test file javadoc produc proper document file

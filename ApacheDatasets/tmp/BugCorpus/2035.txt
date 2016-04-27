@@ -1,0 +1,1 @@
+pig 2035 macro expans handl multipl expans macro insid macro asf jira case defin test return load ' in' ag gpa group gpa foreach gener group count store ' out' defin test2 return test ' in' ' out' 'name' test ' in' ' 1' 'age' test ' in' ' 2' 'gpa' test2 'studenttab10k' 'myoutput'

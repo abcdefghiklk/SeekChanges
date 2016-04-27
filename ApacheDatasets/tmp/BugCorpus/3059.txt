@@ -1,0 +1,1 @@
+felix 3059 reexport packag calcul correctli lead resolv class load bug asf jira http www mail archiv user felix apach org msg10677 html 1 requir bundl visibl reexport work transit felix 3 2 2 comment wrt version test similar issu felix m2 plugin http www mail archiv felix dev incub apach org msg02622 html attach zip consist 4 bundl 1 work equinox fail load felix 3 2 2

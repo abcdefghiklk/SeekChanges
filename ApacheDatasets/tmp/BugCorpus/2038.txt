@@ -1,0 +1,1 @@
+pig 2038 pig fail pars empti tupl map bag constant asf jira pig fail pars queri foreach load 'b' gener store 'output' error msg fail pars null similar problem occur empti bag map constant

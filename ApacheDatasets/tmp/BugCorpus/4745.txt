@@ -1,0 +1,1 @@
+wicket 4745 set initi state debugbar expand collaps asf jira implement debugbar initi load expand state collaps click set initi state debugbar code overrid public void renderhead final iheaderrespons respons super renderhead respons respons renderonloadjavascript wicketdebugbarcollaps workaround

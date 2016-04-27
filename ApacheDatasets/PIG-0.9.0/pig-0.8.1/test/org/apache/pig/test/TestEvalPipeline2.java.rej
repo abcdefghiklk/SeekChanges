@@ -1,0 +1,17 @@
+***************
+*** 1048,1054 ****
+          
+          @Override
+          public Schema outputSchema(Schema input) {
+-             return new Schema(new Schema.FieldSchema(null, DataType.MAP));
+          }
+      }
+      
+--- 1065,1071 ----
+          
+          @Override
+          public Schema outputSchema(Schema input) {
++             return new Schema(new Schema.FieldSchema(getSchemaName("parselong", input), DataType.MAP));
+          }
+      }
+      

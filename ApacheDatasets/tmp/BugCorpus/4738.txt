@@ -1,0 +1,1 @@
+wicket 4738 downloadlink wrap string model file detach asf jira compon downloadlink call method wrap class compon paramet filenamemodel model stringresourcemodel resolv resourc bundl correctli discuss http stackoverflow question 12196533 wicket stringresourcemodel downloadlink patch trivial detach miss

@@ -1,0 +1,1 @@
+felix 3082 framework bundl add listen stop state asf jira framework 3 2 0 fix race condit bundl continu add listen stop felix 2748 part fix made bundl longer add listen stop state restrict spec point view make reintroduc origin issu fix

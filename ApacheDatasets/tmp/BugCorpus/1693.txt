@@ -1,0 +1,1 @@
+pig 1693 support project rang express foreach rest field asf jira common case pig peopl column data oper store data ten column user perform cast column foreach gener int firstcol secondcol thridcol forthcol fifthcol sixthcol seventhcol eigthcol ninethcol tenthcol store 'output' wors user column ideal transform foreach gener int firstcol rest store 'output'

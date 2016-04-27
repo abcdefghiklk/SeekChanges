@@ -1,0 +1,1 @@
+felix 2959 framework implement osgi r4 3 class loader byte code weav hook asf jira implement osgi r4 3 specification' class load hook enabl byte code weav

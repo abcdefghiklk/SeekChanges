@@ -1,0 +1,1 @@
+pig 2069 loadfunc jar ship backend multiqueri case asf jira pig automat figur jar loadfunc ship backend script load '1 txt' someloadfunc filter 0 0 filter 1 1 join 0 0 dump queri multiqueri reus creat implicit split merg multiqueri job merg udf list properli

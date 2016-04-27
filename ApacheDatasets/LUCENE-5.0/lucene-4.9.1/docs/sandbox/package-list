@@ -1,0 +1,3 @@
+org.apache.lucene.codecs.idversion
+org.apache.lucene.sandbox.queries
+org.apache.lucene.sandbox.queries.regex

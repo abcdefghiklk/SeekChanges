@@ -1,0 +1,1 @@
+pig 2071 cast numer type chararrai schema merg union inconsist schema merg case asf jira pig 1536 column output union sourc column input type charrarai numer type column numer type cast chararrai case chararrai numer type incompat result implicit cast consist case union chararrai numer type incompat

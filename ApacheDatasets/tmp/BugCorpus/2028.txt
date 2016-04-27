@@ -1,0 +1,1 @@
+pig 2028 speed multiqueri unit test asf jira switch testmultiquerybas testmultiqueri local mode result laptop mini cluster testmultiquerybas 17 min 17 sec testmultiqueri 23 min 2 sec local mode testmultiquerybas 4 min 17 sec testmultiqueri 5 min 51 sec

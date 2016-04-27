@@ -1,0 +1,1 @@
+pig 2062 script silent end asf jira script end silent execut load '1 txt' a0 a1 load '2 txt' b0 b1 join a0 b0 store '1111' alia run throw keyword

@@ -1,0 +1,1 @@
+felix 2998 framework osgi r4 3 filter handl call equal compar return fals asf jira previous spec consist clear handl thrown equal compar evalu filter situat defin return fals filter consist similar case filter process

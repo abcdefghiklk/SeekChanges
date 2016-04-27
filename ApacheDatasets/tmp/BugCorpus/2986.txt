@@ -1,0 +1,1 @@
+felix 2986 framework implement osgi r4 3 resolv hook asf jira osgi r4 3 specif introduc resolv hook impact resolv resolv bundl depend

@@ -1,0 +1,16 @@
+***************
+*** 74,80 ****
+              
+              LogicalFieldSchema fieldSchema = null;
+              
+-             // schema of the expression after flatten
+              LogicalSchema expSchema = null;
+              
+              if (exp.getFieldSchema()!=null) {
+--- 74,79 ----
+              
+              LogicalFieldSchema fieldSchema = null;
+              
+              LogicalSchema expSchema = null;
+              
+              if (exp.getFieldSchema()!=null) {

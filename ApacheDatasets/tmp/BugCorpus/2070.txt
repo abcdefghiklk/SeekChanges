@@ -1,0 +1,1 @@
+pig 2070 unknown error messag error case asf jira queri load '1 txt' a0 int a1 int load '2 txt' a0 int a1 chararrai cogroup a0 a1 a0 a1 pig messag includ unknown word 2011 05 13 11 01 18 682 main error org apach pig tool grunt grunt error 1051 line 3 column 4 cast unknown error messag meaning
