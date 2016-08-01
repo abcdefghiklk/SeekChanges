@@ -5,12 +5,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
-
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 import utils.FileUtils;
 import utils.MatrixUtil;
@@ -18,6 +18,68 @@ import utils.TreeNode;
 import Jama.Matrix;
 
 public class StructuredIR {
+	public static void getElementScoringMat(ArrayList<String> bugFileList, 
+											ArrayList<String> codeFileList,
+											ArrayList<String> corpusFileList, 
+											String simMatFilePath, 
+											double lambda) throws Exception{
+		int corpusSize=getCorpusSize(corpusFileList);	
+		HashMap<String, Double> corpusLM=getCorpusIEF(corpusFileList);
+		//dirichlet smoothing \mu=1000
+		int mu=1000;
+		
+		Matrix probMat=new Matrix(bugFileList.size(),codeFileList.size());
+		for(String oneCodeFile:codeFileList){
+			HashMap<String, Double> docLM=getDocLM(oneCodeFile);
+			int docSize=getDocSize(oneCodeFile);
+			double priorProb=(docSize+0.0d)/(corpusSize+0.0d);
+			lambda=(docSize+0.0d)/(docSize+mu+0.0d);
+			for(String oneBugFile:bugFileList){	
+				HashMap<String, Integer> docTF=getDocTF(oneBugFile);
+				double prob=Math.exp(getLogSmoothedLMProb(docTF, docLM, corpusLM,lambda));
+				
+				probMat.set(bugFileList.indexOf(oneBugFile), codeFileList.indexOf(oneCodeFile),prob*priorProb);
+			}
+		}
+		MatrixUtil.exportMatrix(bugFileList, codeFileList, probMat, simMatFilePath);
+	}
+	public static void getPropagationMat2(String bugCorpusDirPath, 
+										String codeCorpusDirPath, 
+										String simMatFilePath, 
+										double alpha, 
+										double rho,
+										double lambda) throws Exception{
+		ArrayList<String> bugFileList=new ArrayList<String>();
+		ArrayList<String> codeFileList=new ArrayList<String>();
+		ArrayList<String> corpusFileList = new ArrayList<String>();
+		getFileList(bugCorpusDirPath, codeCorpusDirPath, corpusFileList, bugFileList, codeFileList);
+		HashMap<String, Double> corpusLM=getCorpusIEF(corpusFileList);
+		Matrix probMat=new Matrix(bugFileList.size(),codeFileList.size());
+		long totalIndexingTime=0;
+		ArrayList<TreeNode<ProgramElement>> packageStructure = getPackageStructure(codeFileList);
+		for(String oneBugFile:bugFileList){
+			computeLeafRelevanceScore(codeCorpusDirPath, packageStructure, oneBugFile, corpusLM,lambda);
+//			propagate(packageStructure, rho, lambda);
+//			assignScores(packageStructure, probMat);
+//			clearRelevanceScore(packageStructure);
+		}
+//		probMat.set(bugFileList.indexOf(oneBugFile), codeFileList.indexOf(oneCodeFile),propagationScore);
+			
+		MatrixUtil.exportMatrix(bugFileList, codeFileList, probMat, simMatFilePath);
+		return;
+	}
+	
+	public static void computeLeafRelevanceScore(String codeCorpusDirPath, ArrayList<TreeNode<ProgramElement>> packageStructure, String oneBugFile, HashMap<String, Double>corpusLM, double lambda) throws Exception{
+		for(TreeNode<ProgramElement> oneElement:packageStructure){
+			if(oneElement.isLeaf()){
+				String filePath=Paths.get(codeCorpusDirPath, oneElement.getData().getFullElementPath()+".java").toString();
+				double score=computeRelevanceScore(filePath, oneBugFile, corpusLM, lambda);
+				oneElement.getData().setRelevanceScore(score);
+			}
+		}
+	}
+	
+	
 	public static long getPropagationMat(String bugCorpusDirPath, String codeCorpusDirPath, String simMatFilePath, double alpha, double rho, double lambda) throws Exception{
 		ArrayList<String> corpusFileList=new ArrayList<String>();
 		ArrayList<String> bugFileList=new ArrayList<String>();
@@ -471,8 +533,11 @@ public class StructuredIR {
 	}
 	
 	
-	public static TreeNode<String> getPackageStructure(ArrayList<String> codeFileList){
-		TreeNode<String> rootNode=new TreeNode<String>(null);
+	public static ArrayList<TreeNode<ProgramElement>> getPackageStructure(ArrayList<String> codeFileList){
+		ArrayList<TreeNode<ProgramElement>> treeList=new ArrayList<TreeNode<ProgramElement>>();
+		TreeNode<ProgramElement> rootNode=new TreeNode<ProgramElement>(null);
+		treeList.add(rootNode);
+		
 		for(String oneCodeFile:codeFileList){
 			String packagePath=oneCodeFile.substring(oneCodeFile.lastIndexOf("\\")+1, oneCodeFile.length());
 			if(packagePath.endsWith(".java")){
@@ -481,22 +546,35 @@ public class StructuredIR {
 //			System.out.println(packagePath);
 			String []packages=packagePath.split("\\.");
 			if(rootNode.isLeaf()){
-				rootNode.setData(packages[0]);
-				TreeNode<String> fatherNode=rootNode;
+				ProgramElement rootElement=new ProgramElement();
+				rootElement.setElementName(packages[0]);
+				rootElement.setFullElementPath(packages[0]);
+				rootNode.setData(rootElement);
+				TreeNode<ProgramElement> fatherNode=rootNode;
 				for(int index=1;index<packages.length;index++){
-					TreeNode<String> childNode=new TreeNode<String>(packages[index],fatherNode);
+					ProgramElement childElement=new ProgramElement();
+					childElement.setElementName(packages[index]);
+					childElement.setFullElementPath(fatherNode.getData().getFullElementPath()+"."+packages[index]);
+					TreeNode<ProgramElement> childNode=new TreeNode<ProgramElement>(childElement,fatherNode);
+					treeList.add(childNode);
 					fatherNode=childNode;
 				}
 			}
 			else{
-				TreeNode<String> fatherNode=rootNode;
+				TreeNode<ProgramElement> fatherNode=rootNode;
 				for(int i=1;i<packagePath.length();i++){
-					if(fatherNode.hasChild(packages[i])){
-						fatherNode=fatherNode.getChild(packages[i]);
+					ProgramElement oneElement=new ProgramElement();
+					oneElement.setElementName(packages[i]);
+					oneElement.setFullElementPath(fatherNode.getData().getFullElementPath()+"."+packages[i]);
+					if(fatherNode.hasChild(oneElement)){
+						fatherNode=fatherNode.getChild(oneElement);
 					}
 					else{
 						for(int index=i;index<packages.length;index++){
-							TreeNode<String> childNode=new TreeNode<String>(packages[index],fatherNode);
+							oneElement.setElementName(packages[index]);
+							oneElement.setFullElementPath(fatherNode.getData().getFullElementPath()+"."+packages[index]);
+							TreeNode<ProgramElement> childNode=new TreeNode<ProgramElement>(oneElement,fatherNode);
+							treeList.add(childNode);
 							fatherNode=childNode;
 						}
 						break;
@@ -504,22 +582,26 @@ public class StructuredIR {
 				}
 			}
 		}
-		return rootNode;
+		return treeList;
 	}
 	
 	
 	public static void main(String[] args) throws Exception {
 //		 TODO Auto-generated method stub
-		String bugDirPath="C:/Users/dell/Documents/EClipse/experimentResult/Corpus/ZOOKEEPER-3.4.0/bug/summary";
-		String codeDirPath="C:/Users/dell/Documents/EClipse/experimentResult/Corpus/ZOOKEEPER-3.4.0/code/codeContentCorpus";
+		String bugDirPath="C:/Users/dell/Documents/EClipse/experimentResult/Corpus/Myfaces-2.0.1/bug/summary";
+		String codeDirPath="C:/Users/dell/Documents/EClipse/experimentResult/Corpus/Myfaces-2.0.1/code/codeContentCorpus";
 		ArrayList<String> corpusFileList=new ArrayList<String>();
 		ArrayList<String> bugFileList=new ArrayList<String>();
 		ArrayList<String> codeFileList=new ArrayList<String>();
 		getFileList(bugDirPath, codeDirPath, corpusFileList, bugFileList, codeFileList);
-		TreeNode<String> rootNode=getPackageStructure(codeFileList);
-		for(TreeNode<String> oneNode: rootNode.getChild("apache").getChild("zookeeper").getChildren()){
-			System.out.println(oneNode.getData()+"\t"+oneNode.isLeaf());
+		int num=0;
+		for(String oneCodeFile:codeFileList){
+			if(!oneCodeFile.endsWith(".java")){
+				num++;
+			}
 		}
+		System.out.println(num);
+		
 //		for(String oneCodeFile: codeFileList){
 //			String packagePath=oneCodeFile.substring(oneCodeFile.lastIndexOf("\\")+1, oneCodeFile.length());
 //			String []packages=packagePath.split("\\.");

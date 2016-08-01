@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import Jama.Matrix;
 import bug.BugRecord;
 
 public class FileUtils {
@@ -118,8 +119,12 @@ public class FileUtils {
 //			System.out.println("processing the project:"+projectName);
 //			fromText2XML(inputFile,outputFile);
 //		}
-		File file=new File("C:/Users/dell/Documents/EClipse/experimentResult/Corpus");
-		deleteDir(file);
+		Matrix mat=Matrix.random(3,3);
+		int []A={0,2};
+		
+		Matrix subMat=mat.getMatrix(A, A);
+		System.out.println(subMat.get(1, 1));
+		System.out.println(mat.get(2, 2));
 	}
 
 }

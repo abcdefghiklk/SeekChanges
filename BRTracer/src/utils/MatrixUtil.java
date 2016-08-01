@@ -3,6 +3,7 @@ package utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -273,6 +274,76 @@ public class MatrixUtil {
 		return simMat;
 	}
 	
+	/**
+	 * Import the similarity matrix for packages from file
+	 * @param idList1
+	 * @param idList2
+	 * @param srcFilePath
+	 * @return
+	 * @throws Exception
+	 */
+	public static Matrix importSimilarityMatrix_PackageOnly(ArrayList<String> idList1, ArrayList<String> idList2, String srcFilePath) throws Exception{
+		if(!new File(srcFilePath).isFile()){
+			System.out.println("The input similarity file path is invalid");
+			return Matrix.random(0, 0);
+		}
+		
+		//The file format:
+		//id1\tid2\t...\tidk
+		//entry(1,1)\tentry(1,2)\t...entry(1,k)
+		//...
+		//entry(k,1)\tentry(k,2)\t...entry(k,k)
+		BufferedReader reader=new BufferedReader(new FileReader(srcFilePath));
+		String line=reader.readLine();
+		String []ids=line.split("\t");
+		int rowCount=ids.length;
+		ArrayList<Integer> rowIndex=new ArrayList<Integer>();
+		idList1.clear();
+		int index=0;
+		for(String id:ids){
+			if(!id.endsWith(".java")){
+				idList1.add(id);
+				rowIndex.add(index);
+			}
+			index++;
+		}
+		
+		
+		index=0;
+		line=reader.readLine();
+		ids=line.split("\t");
+		int colCount=ids.length;
+		ArrayList<Integer> colIndex=new ArrayList<Integer>();
+		idList2.clear();
+		for(String id:ids){
+			if(!id.endsWith(".java")){
+				idList2.add(id);
+				colIndex.add(index);
+			}
+			index++;
+		}
+		Matrix simMat=Matrix.random(rowCount, colCount);
+		int i=0;
+		while((line=reader.readLine())!=null){
+			String []strs=line.split("\t");
+			for(int j=0; j<strs.length;j++){
+				simMat.set(i, j, Double.parseDouble(strs[j]));
+			}
+			i++;
+		}
+		reader.close();
+		
+		int []rowIndexArray=new int[rowIndex.size()];
+		int []colIndexArray=new int[colIndex.size()];
+		
+		for(int k=0;k<rowIndex.size();k++){
+			rowIndexArray[k]=rowIndex.get(k);
+		}
+		for(int k=0;k<colIndex.size();k++){
+			colIndexArray[k]=colIndex.get(k);
+		}
+		return simMat.getMatrix(rowIndexArray, colIndexArray);
+	}
 	/**
 	 * Import the similarity matrix from file,
 	 * The information is saved in simMat and idList1, idList2

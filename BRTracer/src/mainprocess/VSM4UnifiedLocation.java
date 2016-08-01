@@ -83,7 +83,7 @@ public class VSM4UnifiedLocation {
 			String bugID=oneBugFixedListPair.getKey();
 			ArrayList<String> bugIdList=new ArrayList<String>();
 			ArrayList<String> codeClassList=new ArrayList<String>();
-			Matrix scoreMat= MatrixUtil.importSimilarityMatrix(bugIdList, codeClassList, simMatFilePath);
+			Matrix scoreMat= MatrixUtil.importSimilarityMatrix_PackageOnly(bugIdList, codeClassList, simMatFilePath);
 			String []bugIdArray=bugIdList.toArray(new String[0]);
 			String []codeClassArray=codeClassList.toArray(new String[0]);
 			int rowIndex=MatrixUtil.getIndex(bugID, bugIdArray);
@@ -99,7 +99,7 @@ public class VSM4UnifiedLocation {
 					}			
 				}	
 //				System.out.println(matchedClass);
-				if(matchedClass.length()>0 && !matchedClassList.contains(matchedClass)){
+				if(matchedClass.length()>0 && !matchedClass.endsWith(".java") && !matchedClassList.contains(matchedClass) ){
 					matchedClassList.add(matchedClass);
 					int colIndex=MatrixUtil.getIndex(matchedClass, codeClassArray);
 					FileUtils.write_append2file(String.join(",", bugID, matchedClass,String.valueOf(MatrixUtil.getRank(rowIndex, colIndex, scoreMat)),"0.0")+"\n",outputFilePath);
@@ -125,11 +125,11 @@ public class VSM4UnifiedLocation {
 	}
 //	public static String getPackage(ArrayList<String> file)
 	public static void main(String []args) throws Exception{
-		String rootDirPath=args[0];
-		String datasetsDirPath=args[1];
-//		String rootDirPath="C:/Users/dell/Documents/EClipse";
-//		String datasetsDirPath=Paths.get(rootDirPath,"ApacheDatasets").toString();
-		String timestatsFilePath=Paths.get(rootDirPath,"experimentResult","timeStats").toString();
+//		String rootDirPath=args[0];
+//		String datasetsDirPath=args[1];
+		String rootDirPath="C:/Users/dell/Documents/EClipse";
+		String datasetsDirPath=Paths.get(rootDirPath,"SeekChanges", "ApacheDatasets").toString();
+		String timestatsFilePath=Paths.get(rootDirPath,"experimentResult","timeStats_package").toString();
 		String configFilePath=Paths.get(rootDirPath, "experimentResult","property").toString();
 		String intermediateDirPath=Paths.get(rootDirPath, "experimentResult","Corpus").toString();
 		if(!new File(intermediateDirPath).isDirectory()){
@@ -139,7 +139,7 @@ public class VSM4UnifiedLocation {
 		if(new File(outputFilePath).isFile()){
 			new File(outputFilePath).delete();
 		}
-		String evaluationDirPath=Paths.get(rootDirPath, "experimentResult", "rankingResult").toString();
+		String evaluationDirPath=Paths.get(rootDirPath, "experimentResult", "rankingResult_package").toString();
 		if(!new File(evaluationDirPath).isDirectory()){
 			new File(evaluationDirPath).mkdir();
 		}
@@ -149,8 +149,8 @@ public class VSM4UnifiedLocation {
 //		datasets.put("FELIX-framework-4.0.0", "felix-framework-3.2.2");
 		datasets.put("MYFACES-2.0.1", "myfaces-2.0.0");
 		datasets.put("PIG-0.9.0", "pig-0.8.1");
-//		datasets.put("WICKET-6.1.0", "wicket-6.0.0-beta3");
-//		datasets.put("ZOOKEEPER-3.4.0", "zookeeper-3.3.6");
+		datasets.put("WICKET-6.1.0", "wicket-6.0.0-beta3");
+		datasets.put("ZOOKEEPER-3.4.0", "zookeeper-3.3.6");
 		
 		//corpus too large to build
 //		datasets.put("CAMEL-2.15.0", "camel-2.14.4");
@@ -161,6 +161,7 @@ public class VSM4UnifiedLocation {
 		
 		//The solr corpus cannot match the files mentioned in the report
 //		datasets.put("SOLR-5.0", "solr-4.10.4");
+		
 		String []logNames={/*"Bug","Improvement","New Feature",*/"All"};
 		for(Entry<String, String> pair:datasets.entrySet()){
 			String oneProjectEvalDir=Paths.get(evaluationDirPath, pair.getKey()).toString();
@@ -209,10 +210,10 @@ public class VSM4UnifiedLocation {
 				FileUtils.write_append2file(pair.getKey()+" "+oneLogName+" "+"VSM"+" "+runningTime+"\n", timestatsFilePath);
 			}
 		}
-//		String resultDirPath=Paths.get(rootDirPath, "experimentResult","evalResult").toString();
-//		FileEvaluate.evaluateDir(evaluationDirPath, 10, resultDirPath);
-//		String outputExcelPath=Paths.get(rootDirPath, "experimentResult","output.xls").toString();
-//		FileEvaluate.exportEvaluationResult2Excel(resultDirPath, outputExcelPath);
+		String resultDirPath=Paths.get(rootDirPath, "experimentResult","evalResult_package").toString();
+		FileEvaluate.evaluateDir(evaluationDirPath, 10, resultDirPath);
+		String outputExcelPath=Paths.get(rootDirPath, "experimentResult","output_package.xls").toString();
+		FileEvaluate.exportEvaluationResult2Excel(resultDirPath, outputExcelPath);
 	}
 }
 
