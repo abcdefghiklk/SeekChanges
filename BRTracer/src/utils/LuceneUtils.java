@@ -1,6 +1,5 @@
 package utils;
 
-import org.apache.lucene.search.similarities.TFIDFSimilarity;
 
 public class LuceneUtils {
 

@@ -33,7 +33,9 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.search.similarities.ClassicSimilarity;
+import org.apache.lucene.search.similarities.DFISimilarity;
 import org.apache.lucene.search.similarities.LMDirichletSimilarity;
 import org.apache.lucene.search.similarities.LMSimilarity;
 import org.apache.lucene.search.similarities.Similarity;
@@ -44,7 +46,42 @@ import org.apache.lucene.util.QueryBuilder;
 import org.apache.lucene.util.Version;
 
 public class LuceneExample {
-
+	public static void index(String corpusDirPath, String indexStorePath) throws Exception{
+		File corpusDir=new File(corpusDirPath);
+		if(!corpusDir.isDirectory()){
+			System.out.println("The input directory path is invalid!");
+			return;
+		}
+		
+		
+		Version matchVersion=Version.LATEST;
+		Directory dir = FSDirectory.open(Paths.get(indexStorePath));
+		Analyzer analyzer = new StandardAnalyzer();
+		analyzer.setVersion(matchVersion);
+		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+//		iwc.setSimilarity(new ClassicSimilarity());
+		iwc.setOpenMode(OpenMode.CREATE);
+		IndexWriter writer = new IndexWriter(dir, iwc);
+		
+		
+		for(File oneFile: corpusDir.listFiles()){
+			
+			Document doc=new Document();
+			BufferedReader reader=new BufferedReader(new FileReader(oneFile));
+			String line=reader.readLine();
+			reader.close();
+			TextField contentField = new TextField("fileContents", line, Store.YES);
+			StringField fullPathField = new StringField("fullFilePath", oneFile.getAbsolutePath(), Store.YES);
+			StringField fileNameField = new StringField("fileName", oneFile.getName(), Store.YES);
+			doc.add(contentField);
+			doc.add(fullPathField);
+			doc.add(fileNameField);
+			writer.addDocument(doc);
+		}
+		
+		writer.close();
+	}
+	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 //		Version matchVersion = Version.LATEST; // Substitute desired Lucene version for XY
@@ -74,7 +111,7 @@ public class LuceneExample {
 		
 		
 		long startTime=System.currentTimeMillis();
-		String indexStorePath="C:/Users/dell/Documents/EClipse/index";
+		String indexStorePath="C:/Users/ql29/Documents/EClipse/index";
 		Version matchVersion=Version.LATEST;
 		Directory dir = FSDirectory.open(Paths.get(indexStorePath));
 		Analyzer analyzer = new StandardAnalyzer();
@@ -83,9 +120,9 @@ public class LuceneExample {
 		iwc.setSimilarity(new ClassicSimilarity());
 		iwc.setOpenMode(OpenMode.CREATE);
 		IndexWriter writer = new IndexWriter(dir, iwc);
-//
+		
 		for(int i=1;i<=3;i++){
-			String filePath="C:/Users/dell/Documents/EClipse/"+String.valueOf(i)+".txt";
+			String filePath="C:/Users/ql29/Documents/EClipse/"+String.valueOf(i)+".txt";
 			File f=new File(filePath);
 			Document doc=new Document();
 			BufferedReader reader=new BufferedReader(new FileReader(f));
@@ -103,7 +140,7 @@ public class LuceneExample {
 		IndexReader reader=DirectoryReader.open(dir);
 
 		IndexSearcher searcher=new IndexSearcher(reader);
-		searcher.setSimilarity(new LMDirichletSimilarity());
+		searcher.setSimilarity(new BM25Similarity());
 		QueryParser parser=new QueryParser("fileContents", queryAnalyzer);
 		String queryString="This is a fine day today";
 		Query query=parser.parse(queryString);
