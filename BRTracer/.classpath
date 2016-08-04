@@ -6,7 +6,6 @@
 	<classpathentry kind="lib" path="lib/contenttype-3.2.0-v20060603.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/lucene-analyzers-common-6.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/lucene-core-2.9.4.jar"/>
 	<classpathentry kind="lib" path="lib/lucene-core-6.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/lucene-queryparser-6.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.13-bin.jar"/>

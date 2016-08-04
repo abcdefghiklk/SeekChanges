@@ -1,12 +1,25 @@
 package bug;
 
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.IntPoint;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import config.Config;
+import sourcecode.SourceCode;
 import utils.DateFormat;
 import utils.Splitter;
 import utils.Stem;
@@ -270,7 +283,45 @@ public class BugDataProcessor {
 		classesInDescriptionWriter.close();	
 	}
 	
-
+	/**
+	 * index bug Corpus
+	 * @param bugList
+	 * @throws Exception
+	 */
+	static public void indexBugCorpus(ArrayList<BugRecord> bugList) throws Exception{
+		String dstDirPath= Config.getInstance().getCodeCorpusDir();
+		//create a directory
+		File dstDir=new File(dstDirPath);
+		if(!dstDir.isDirectory()){
+			dstDir.mkdir();
+		}
+		
+		Version matchVersion=Version.LATEST;
+		String indexStorePath=Paths.get(dstDirPath,"index").toString();
+		Directory dir = FSDirectory.open(Paths.get(indexStorePath));
+		Analyzer analyzer = new StandardAnalyzer();
+		analyzer.setVersion(matchVersion);
+		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+		iwc.setOpenMode(OpenMode.CREATE);
+		IndexWriter writer = new IndexWriter(dir, iwc);
+		
+		
+		for(BugRecord oneBug: bugList){
+			
+			org.apache.lucene.document.Document doc=new org.apache.lucene.document.Document();
+			StringField bugIDField= new StringField("bugID", oneBug.getBugId(), Store.YES);
+			TextField bugDescriptionField=new TextField("bugDescription", oneBug.getBugDescription(),Store.YES);
+			TextField bugSummaryField=new TextField("bugSummary", oneBug.getBugSummary(),Store.YES);
+			TextField bugInformationField=new TextField("bugInformation", oneBug.getBugSummary()+" "+oneBug.getBugDescription(),Store.YES);
+			doc.add(bugIDField);
+			doc.add(bugDescriptionField);
+			doc.add(bugSummaryField);
+			doc.add(bugInformationField);
+			writer.addDocument(doc);
+		}
+		writer.close();
+		return;
+	}
 	
 	/**
 	 * Extract all the class names in a given bug report

@@ -8,6 +8,20 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.IntPoint;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
+
 import config.Config;
 import sourcecode.ast.FileParser;
 import utils.Stem;
@@ -394,6 +408,64 @@ public class CodeDataProcessor {
 		}		
 		return corpus;
 	}
+	
+	/**
+	 * Index the source code data by Lucene
+	 * @param corpus
+	 * @throws Exception
+	 */
+	public static void indexCodeData(SourceCodeCorpus corpus) throws Exception{
+		String dstDirPath= Config.getInstance().getCodeCorpusDir();
+		//create a directory
+		File dstDir=new File(dstDirPath);
+		if(!dstDir.isDirectory()){
+			dstDir.mkdir();
+		}
+		
+		Version matchVersion=Version.LATEST;
+		String indexStorePath=Paths.get(dstDirPath,"index").toString();
+		Directory dir = FSDirectory.open(Paths.get(indexStorePath));
+		Analyzer analyzer = new StandardAnalyzer();
+		analyzer.setVersion(matchVersion);
+		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+		iwc.setOpenMode(OpenMode.CREATE);
+		IndexWriter writer = new IndexWriter(dir, iwc);
+		
+		
+		for(SourceCode oneCodeFile: corpus.getSourceCodeList()){
+			
+			Document doc=new Document();
+			TextField contentField = new TextField("content", oneCodeFile.getContent(), Store.YES);
+			TextField fullClassNameField = new TextField("fullClassName", oneCodeFile.getFullClassName(), Store.YES);
+			doc.add(contentField);
+			doc.add(fullClassNameField);
+			
+			String classNameListStr= String.join(" ",oneCodeFile.getClassNameList().toArray(new String[0]));
+			TextField classNameListField = new TextField("classNameList", classNameListStr, Store.YES);
+			doc.add(classNameListField);
+			
+			String methodNameListStr= String.join(" ",oneCodeFile.getMethodNameList().toArray(new String[0]));
+			TextField methodNameListField = new TextField("methodNameList", methodNameListStr, Store.YES);
+			doc.add(methodNameListField);
+			
+			ArrayList<String> codeSegmentList=oneCodeFile.getCodeSegmentList();
+			IntPoint segmentNumField = new IntPoint("segmentNum", codeSegmentList.size());
+			doc.add(segmentNumField);
+			
+			int i=0; 
+			for(String oneCodeSegment: codeSegmentList){
+				TextField codeSegmentField = new TextField("segment@"+i, oneCodeSegment, Store.YES);
+				doc.add(codeSegmentField);
+				i=i+1;
+			}			
+			writer.addDocument(doc);		
+		}
+		writer.close();
+		return;
+	}
+	
+	
+	
 	
 	/**
 	 * Detect all files with the given type in the given directory 

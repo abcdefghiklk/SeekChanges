@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.TreeSet;
 /**
  * 
- * @author ql29
+ * @author Qiuchi Li
  * BugRecord class
  * contains all the information of a bug
  * extracted from the bug reports
