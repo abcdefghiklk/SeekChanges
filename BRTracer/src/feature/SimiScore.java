@@ -39,6 +39,9 @@ public class SimiScore {
 		}
 		MatrixUtil.exportMatrix(bugVecList, codeVecList, scoreMat, scoreMatFilePath);
 	}
+	
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		

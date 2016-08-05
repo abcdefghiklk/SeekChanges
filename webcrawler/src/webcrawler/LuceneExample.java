@@ -12,6 +12,11 @@ import java.nio.file.Paths;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.AnalyzerWrapper;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.Analyzer.TokenStreamComponents;
+import org.apache.lucene.analysis.core.LowerCaseTokenizer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.en.PorterStemFilter;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.document.Document;
@@ -46,6 +51,7 @@ import org.apache.lucene.util.QueryBuilder;
 import org.apache.lucene.util.Version;
 
 public class LuceneExample {
+
 	public static void index(String corpusDirPath, String indexStorePath) throws Exception{
 		File corpusDir=new File(corpusDirPath);
 		if(!corpusDir.isDirectory()){
@@ -82,74 +88,76 @@ public class LuceneExample {
 		writer.close();
 	}
 	
-	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
-//		Version matchVersion = Version.LATEST; // Substitute desired Lucene version for XY
-//	    Analyzer analyzer = new StandardAnalyzer(); // or any other analyzer
-//	    analyzer.setVersion(matchVersion);
-//	    TokenStream ts = analyzer.tokenStream("asa", new StringReader("some text goes here"));
-//	    // The Analyzer class will construct the Tokenizer, TokenFilter(s), and CharFilter(s),
-//	    //   and pass the resulting Reader to the Tokenizer.
-//	    OffsetAttribute offsetAtt = ts.addAttribute(OffsetAttribute.class);
-//	     
-//	    try {
-//	    	ts.reset(); // Resets this stream to the beginning. (Required)
-//	    	while (ts.incrementToken()) {
-//	    		// Use AttributeSource.reflectAsString(boolean)
-//	    		// for token stream debugging.
-//	    		System.out.println("token: " + ts.reflectAsString(true));
-//	 
-//	    		System.out.println("token start offset: " + offsetAtt.startOffset());
-//	    		System.out.println("  token end offset: " + offsetAtt.endOffset());
-//	    	}
-//	    	ts.end();   // Perform end-of-stream operations, e.g. set the final offset.
-//	    } 	
-//	    finally {
-//	    	ts.close(); // Release resources associated with this stream.
-//	    }
-//	    analyzer.close();
-		
-		
-		long startTime=System.currentTimeMillis();
-		String indexStorePath="C:/Users/ql29/Documents/EClipse/index";
+	public static void search(String indexStorePath, String queryString) throws Exception{
 		Version matchVersion=Version.LATEST;
-		Directory dir = FSDirectory.open(Paths.get(indexStorePath));
-		Analyzer analyzer = new StandardAnalyzer();
-		analyzer.setVersion(matchVersion);
-		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
-		iwc.setSimilarity(new ClassicSimilarity());
-		iwc.setOpenMode(OpenMode.CREATE);
-		IndexWriter writer = new IndexWriter(dir, iwc);
-		
-		for(int i=1;i<=3;i++){
-			String filePath="C:/Users/ql29/Documents/EClipse/"+String.valueOf(i)+".txt";
-			File f=new File(filePath);
-			Document doc=new Document();
-			BufferedReader reader=new BufferedReader(new FileReader(f));
-			String line=reader.readLine();
-			reader.close();
-			TextField contentField = new TextField("fileContents",line, Store.YES);
-
-			doc.add(contentField);
-			writer.addDocument(doc);
-		}
-		
-		writer.close();
-		Analyzer queryAnalyzer=new StandardAnalyzer();
+		Analyzer queryAnalyzer=new EnglishAnalyzer();
 		queryAnalyzer.setVersion(matchVersion);
+		Directory dir = FSDirectory.open(Paths.get(indexStorePath));
 		IndexReader reader=DirectoryReader.open(dir);
 
 		IndexSearcher searcher=new IndexSearcher(reader);
 		searcher.setSimilarity(new BM25Similarity());
 		QueryParser parser=new QueryParser("fileContents", queryAnalyzer);
-		String queryString="This is a fine day today";
 		Query query=parser.parse(queryString);
-//		System.out.println(query.toString());
+		System.out.println(query.toString());
 		for (ScoreDoc oneScore:searcher.search(query, 3).scoreDocs){
-			System.out.println(oneScore.doc+"\t"+oneScore.score);
+			System.out.println(reader.document(oneScore.doc).get("fileContents")+"\t"+oneScore.score);
 		}
-		long endTime=System.currentTimeMillis();
-		System.out.println(endTime-startTime);
+		reader.close();
+	}
+	
+	public static void main(String[] args) throws Exception {
+		// TODO Auto-generated method stub
+		String inputPath="C:/Users/ql29/Documents/EClipse/testData";
+		String outputPath="C:/Users/ql29/Documents/EClipse/index";
+		index(inputPath, outputPath);
+		
+//		Directory outputDir = FSDirectory.open(Paths.get(outputPath));
+//		IndexReader reader = DirectoryReader.open(outputDir);
+//		for(int i=0;i<reader.numDocs();i++){
+//			Document doc=reader.document(i);
+//			System.out.println(doc.get("fileContents"));
+//		}
+		search(outputPath,"This is a fine day today");
+//		long startTime=System.currentTimeMillis();
+//		String indexStorePath="C:/Users/ql29/Documents/EClipse/index";
+//		Version matchVersion=Version.LATEST;
+//		Directory dir = FSDirectory.open(Paths.get(indexStorePath));
+//		Analyzer analyzer = new StandardAnalyzer();
+//		analyzer.setVersion(matchVersion);
+//		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+//		iwc.setSimilarity(new ClassicSimilarity());
+//		iwc.setOpenMode(OpenMode.CREATE);
+//		IndexWriter writer = new IndexWriter(dir, iwc);
+//		
+//		for(int i=1;i<=3;i++){
+//			String filePath="C:/Users/ql29/Documents/EClipse/"+String.valueOf(i)+".txt";
+//			File f=new File(filePath);
+//			Document doc=new Document();
+//			BufferedReader reader=new BufferedReader(new FileReader(f));
+//			String line=reader.readLine();
+//			reader.close();
+//			TextField contentField = new TextField("fileContents",line, Store.YES);
+//
+//			doc.add(contentField);
+//			writer.addDocument(doc);
+//		}
+//		
+//		writer.close();
+//		Analyzer queryAnalyzer=new StandardAnalyzer();
+//		queryAnalyzer.setVersion(matchVersion);
+//		IndexReader reader=DirectoryReader.open(dir);
+//
+//		IndexSearcher searcher=new IndexSearcher(reader);
+//		searcher.setSimilarity(new BM25Similarity());
+//		QueryParser parser=new QueryParser("fileContents", queryAnalyzer);
+//		String queryString="This is a fine day today";
+//		Query query=parser.parse(queryString);
+//		for (ScoreDoc oneScore:searcher.search(query, 3).scoreDocs){
+//			System.out.println(oneScore.doc+"\t"+oneScore.score);
+//		}
+//		long endTime=System.currentTimeMillis();
+//		System.out.println(endTime-startTime);
 	}
 
 }

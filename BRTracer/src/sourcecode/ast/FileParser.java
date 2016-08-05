@@ -43,7 +43,7 @@ public class FileParser {
 			buf.append(line+"\r\n");
 		}
 		reader.close();
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
+		ASTParser parser = ASTParser.newParser(AST.JLS8);
 		parser.setSource(buf.toString().toCharArray());
 		cu = (CompilationUnit) parser.createAST(null);
 	}

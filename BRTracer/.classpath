@@ -9,20 +9,14 @@
 	<classpathentry kind="lib" path="lib/lucene-core-6.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/lucene-queryparser-6.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.13-bin.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.core.jobs_3.4.1.R34x_v20081128.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.core.jobs_3.6.1.v20141014-1248.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.core.resources_3.4.2.R34x_v20090126.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.core.resources_3.9.1.v20140825-1431.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.core.runtime_3.10.0.v20140318-2214.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.core.runtime_3.4.0.v20080512.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.equinox.common_3.6.200.v20130402-1505.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.equinox.preferences_3.5.200.v20140224-1527.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.jdt.core_3.10.0.v20140604-1726.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.jdt.core_3.4.4.v_894_R34x.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.jface_3.4.1.M20080827-2000.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.osgi_3.10.2.v20150203-1939.jar"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.osgi_3.4.2.R34x_v20080826-1230.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.text_3.4.0.v20080605-1800.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.9.jar"/>
 	<classpathentry kind="lib" path="lib/preferences-3.2.100-v20070522.jar"/>

@@ -284,12 +284,12 @@ public class BugDataProcessor {
 	}
 	
 	/**
-	 * index bug Corpus
+	 * index bug Corpus by Lucene
 	 * @param bugList
 	 * @throws Exception
 	 */
 	static public void indexBugCorpus(ArrayList<BugRecord> bugList) throws Exception{
-		String dstDirPath= Config.getInstance().getCodeCorpusDir();
+		String dstDirPath= Config.getInstance().getBugCorpusDir();
 		//create a directory
 		File dstDir=new File(dstDirPath);
 		if(!dstDir.isDirectory()){
