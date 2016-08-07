@@ -3,6 +3,32 @@ package utils;
 import java.util.ArrayList;
 
 public class Splitter {
+	public static String split(String natureLanguage){
+		ArrayList<String> wordList = new ArrayList<String>();
+        StringBuffer wordBuffer = new StringBuffer();
+        for (char c : natureLanguage.toCharArray()) {
+            if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+                    || (c >= '0' && c <= '9') || c == '\'') {
+                wordBuffer.append(c);
+            } else {
+                String word = wordBuffer.toString();
+                if (!word.equals("")) {
+                    wordList.add(word);
+                }
+                wordBuffer = new StringBuffer();
+            }
+        }
+        if (wordBuffer.length() != 0) {
+            String word = wordBuffer.toString();
+            if (!word.equals("")) {
+                wordList.add(word);
+            }
+            wordBuffer = new StringBuffer();
+        }
+        return String.join(" ", wordList);
+	}
+	
+	
     public static String[] splitNatureLanguage(String natureLanguage) {
         ArrayList<String> wordList = new ArrayList<String>();
         StringBuffer wordBuffer = new StringBuffer();

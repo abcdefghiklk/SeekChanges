@@ -9,4 +9,9 @@ public class Stem {
 		return stemmer.toString();
 
 	}
+	public static void main(String []args){
+		for(String str: Splitter.splitNatureLanguage("this is a good day today !{!?]")){
+			System.out.println(str);
+		}
+	}
 }

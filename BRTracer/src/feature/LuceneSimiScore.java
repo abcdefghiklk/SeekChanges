@@ -5,6 +5,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.core.StopAnalyzer;
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -16,6 +18,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TotalHitCountCollector;
 import org.apache.lucene.search.similarities.BM25Similarity;
+import org.apache.lucene.search.similarities.ClassicSimilarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -36,7 +39,7 @@ public class LuceneSimiScore {
 		IndexReader codeReader = DirectoryReader.open(codeDir);
 
 		IndexSearcher searcher = new IndexSearcher(codeReader);
-		searcher.setSimilarity(new BM25Similarity());
+		searcher.setSimilarity(new ClassicSimilarity());
 		QueryParser parser=new QueryParser("content", queryAnalyzer);
 		
 		
@@ -62,7 +65,6 @@ public class LuceneSimiScore {
 		for(int i=0;i<bugNum;i++){
 			Document doc=bugReader.document(i);
 			queryString= doc.get("bugInformation");
-			System.out.println(queryString);
 			Query query=parser.parse(queryString.replace("[", "").replace("]", ""));
 			for (ScoreDoc oneScore:searcher.search(query,codeNum).scoreDocs){
 				simMat.set(i, oneScore.doc, oneScore.score);
@@ -78,16 +80,13 @@ public class LuceneSimiScore {
 		// TODO Auto-generated method stub
 		
 		
-		String bugCorpusDirPath=Paths.get(Config.getInstance().getIntermediateDir(), "bug").toString();
-		Config.getInstance().setBugCorpusDir(bugCorpusDirPath);
-		BugDataProcessor.indexBugCorpus(BugDataProcessor.importFromXML());
+		Analyzer queryAnalyzer= new EnglishAnalyzer();
+		queryAnalyzer.setVersion(Version.LATEST);
+		QueryParser parser=new QueryParser("content", queryAnalyzer);
+		Query query=parser.parse("this is a good day today");
+		System.out.println(query.toString());
 		
-		String codeCorpusDirPath=Paths.get(Config.getInstance().getIntermediateDir(), "code").toString();
-		Config.getInstance().setCodeCorpusDir(codeCorpusDirPath);
-		CodeDataProcessor.indexCodeData(CodeDataProcessor.extractCodeData());
 		
-		String simScorePath="C:/Users/ql29/Documents/EClipse/simScore";
-		generate(bugCorpusDirPath,codeCorpusDirPath, simScorePath);
 	}
 
 }

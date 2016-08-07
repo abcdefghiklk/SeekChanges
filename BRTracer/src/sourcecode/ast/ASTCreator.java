@@ -34,7 +34,7 @@ public class ASTCreator {
 	
 	//获取文件对应的CompilationUnit
 	public CompilationUnit getCompilationUnit() {
-		ASTParser parser = ASTParser.newParser(AST.JLS8);
+		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setSource(content.toCharArray());
 		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 		return cu;
@@ -44,7 +44,7 @@ public class ASTCreator {
 		ASTCreator creator=new ASTCreator();
 		File f=new File(filePath);
 		creator.getFileContent(f);
-		ASTParser parser = ASTParser.newParser(AST.JLS8);
+		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		if(f.exists()){
 			System.out.println(creator.content);
 			parser.setSource(creator.content.toCharArray());

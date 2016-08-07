@@ -310,9 +310,9 @@ public class BugDataProcessor {
 			
 			org.apache.lucene.document.Document doc=new org.apache.lucene.document.Document();
 			StringField bugIDField= new StringField("bugID", oneBug.getBugId(), Store.YES);
-			TextField bugDescriptionField=new TextField("bugDescription", oneBug.getBugDescription(),Store.YES);
-			TextField bugSummaryField=new TextField("bugSummary", oneBug.getBugSummary(),Store.YES);
-			TextField bugInformationField=new TextField("bugInformation", oneBug.getBugSummary()+" "+oneBug.getBugDescription(),Store.YES);
+			TextField bugDescriptionField=new TextField("bugDescription", Splitter.split(oneBug.getBugDescription()),Store.YES);
+			TextField bugSummaryField=new TextField("bugSummary", Splitter.split(oneBug.getBugSummary()),Store.YES);
+			TextField bugInformationField=new TextField("bugInformation", Splitter.split(oneBug.getBugSummary())+" "+Splitter.split(oneBug.getBugDescription()),Store.YES);
 			doc.add(bugIDField);
 			doc.add(bugDescriptionField);
 			doc.add(bugSummaryField);
