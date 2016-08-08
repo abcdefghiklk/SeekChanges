@@ -118,7 +118,7 @@ public class LuceneSearch {
 	public static void main(String []args) throws Exception{
 //		String rootDirPath=args[0];
 //		String datasetsDirPath=args[1];
-		String rootDirPath="C:/Users/John/Documents/EClipse";
+		String rootDirPath="C:/Users/ql29/Documents/EClipse";
 		String datasetsDirPath=Paths.get(rootDirPath,"SeekChanges", "ApacheDatasets").toString();
 		String timestatsFilePath=Paths.get(rootDirPath,"experimentResult","timeStats").toString();
 		String configFilePath=Paths.get(rootDirPath, "experimentResult","property").toString();
