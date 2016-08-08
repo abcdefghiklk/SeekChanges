@@ -1,5 +1,8 @@
 package feature;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -10,8 +13,13 @@ import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -19,6 +27,8 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TotalHitCountCollector;
 import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.search.similarities.ClassicSimilarity;
+import org.apache.lucene.search.similarities.Similarity;
+import org.apache.lucene.search.similarities.TFIDFSimilarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -39,7 +49,8 @@ public class LuceneSimiScore {
 		IndexReader codeReader = DirectoryReader.open(codeDir);
 
 		IndexSearcher searcher = new IndexSearcher(codeReader);
-		searcher.setSimilarity(new ClassicSimilarity());
+		Similarity s=new OriginalTFIDFSimilarity();
+		searcher.setSimilarity(s);
 		QueryParser parser=new QueryParser("content", queryAnalyzer);
 		
 		
@@ -65,7 +76,7 @@ public class LuceneSimiScore {
 		for(int i=0;i<bugNum;i++){
 			Document doc=bugReader.document(i);
 			queryString= doc.get("bugInformation");
-			Query query=parser.parse(queryString.replace("[", "").replace("]", ""));
+			Query query=parser.parse(queryString);
 			for (ScoreDoc oneScore:searcher.search(query,codeNum).scoreDocs){
 				simMat.set(i, oneScore.doc, oneScore.score);
 			}
@@ -78,13 +89,37 @@ public class LuceneSimiScore {
 	}
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
+		String corpusPath="C:/Users/John/Documents/EClipse/Corpus";
+		String indexPath="C:/Users/John/Documents/EClipse/index";
+		Version matchVersion=Version.LATEST;
+		Analyzer analyzer=new EnglishAnalyzer();
+		analyzer.setVersion(matchVersion);
+		Directory dir = FSDirectory.open(Paths.get(indexPath));
+		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
+		iwc.setOpenMode(OpenMode.CREATE);
+		IndexWriter writer = new IndexWriter(dir, iwc);
+		for(int i=1;i<=3;i++){
+			String fileName=Paths.get(corpusPath,String.valueOf(i)+".txt").toString();
+			BufferedReader reader=new BufferedReader(new FileReader(fileName));
+			Document doc=new Document();
+			TextField field=new TextField("content",reader.readLine(),Store.YES);
+			doc.add(field);
+			writer.addDocument(doc);
+			reader.close();
+		}
 		
+		writer.close();
 		
-		Analyzer queryAnalyzer= new EnglishAnalyzer();
-		queryAnalyzer.setVersion(Version.LATEST);
-		QueryParser parser=new QueryParser("content", queryAnalyzer);
+		IndexReader codeReader = DirectoryReader.open(dir);
+
+		IndexSearcher searcher = new IndexSearcher(codeReader);
+		Similarity s=new OriginalTFIDFSimilarity();
+		searcher.setSimilarity(s);
+		QueryParser parser=new QueryParser("content", analyzer);
 		Query query=parser.parse("this is a good day today");
-		System.out.println(query.toString());
+		for (ScoreDoc oneScore:searcher.search(query,3).scoreDocs){
+			System.out.println(searcher.explain(query, oneScore.doc));
+		}
 		
 		
 	}
