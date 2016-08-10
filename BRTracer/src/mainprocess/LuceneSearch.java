@@ -19,6 +19,7 @@ import bug.BugRecord;
 import config.Config;
 import eval.FileEvaluate;
 import feature.LuceneSimiScore;
+import feature.LuceneVectorCreator;
 import feature.StructuredIR;
 import feature.VSMScore;
 import feature.VectorCreator;
@@ -42,7 +43,7 @@ public class LuceneSearch {
 //			CodeFeatureExtractor.AddPackagesToCorpus(corpusDir, corpus);
 		}
 		String simMatFilePath=Paths.get(Config.getInstance().getIntermediateDir(), "score4ranking").toString();
-		LuceneSimiScore.generate(bugCorpusDirPath, codeCorpusDirPath, simMatFilePath);
+		LuceneVectorCreator.generate(bugCorpusDirPath, codeCorpusDirPath, simMatFilePath);
 //		long indexingTime=0;
 //		long tic=System.currentTimeMillis();
 //		if(modelType=="VSM"){

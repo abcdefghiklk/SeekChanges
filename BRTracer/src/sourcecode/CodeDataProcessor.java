@@ -11,10 +11,13 @@ import java.util.ArrayList;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
@@ -33,6 +36,16 @@ import utils.Stopword;
  *
  */
 public class CodeDataProcessor {
+	
+	public static final FieldType TYPE_STORED = new FieldType();
+	static {
+		TYPE_STORED.setStored(true);
+		TYPE_STORED.setTokenized(true);
+		TYPE_STORED.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
+		TYPE_STORED.setStoreTermVectors(true);
+		TYPE_STORED.setStoreTermVectorPositions(true);
+		TYPE_STORED.freeze();
+	}
 	/**
 	 * Extract the code data from the project
 	 * @param srcDirPath
@@ -435,17 +448,18 @@ public class CodeDataProcessor {
 		for(SourceCode oneCodeFile: corpus.getSourceCodeList()){
 			
 			Document doc=new Document();
-			TextField contentField = new TextField("content", oneCodeFile.getContent(), Store.YES);
-			TextField fullClassNameField = new TextField("fullClassName", oneCodeFile.getFullClassName(), Store.YES);
+			
+			Field contentField = new Field("content", oneCodeFile.getContent(), TYPE_STORED);
+			Field fullClassNameField = new Field("fullClassName", oneCodeFile.getFullClassName(), TYPE_STORED);
 			doc.add(contentField);
 			doc.add(fullClassNameField);
 			
 			String classNameListStr= String.join(" ",oneCodeFile.getClassNameList().toArray(new String[0]));
-			TextField classNameListField = new TextField("classNameList", classNameListStr, Store.YES);
+			Field classNameListField = new Field("classNameList", classNameListStr, TYPE_STORED);
 			doc.add(classNameListField);
 			
 			String methodNameListStr= String.join(" ",oneCodeFile.getMethodNameList().toArray(new String[0]));
-			TextField methodNameListField = new TextField("methodNameList", methodNameListStr, Store.YES);
+			Field methodNameListField = new Field("methodNameList", methodNameListStr, TYPE_STORED);
 			doc.add(methodNameListField);
 			
 			ArrayList<String> codeSegmentList=oneCodeFile.getCodeSegmentList();
@@ -454,7 +468,7 @@ public class CodeDataProcessor {
 			
 			int i=0; 
 			for(String oneCodeSegment: codeSegmentList){
-				TextField codeSegmentField = new TextField("segment@"+i, oneCodeSegment, Store.YES);
+				Field codeSegmentField = new Field("segment@"+i, oneCodeSegment, TYPE_STORED);
 				doc.add(codeSegmentField);
 				i=i+1;
 			}			

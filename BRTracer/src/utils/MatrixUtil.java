@@ -171,11 +171,11 @@ public class MatrixUtil {
 		StringBuffer buf=new StringBuffer();
 		for(String id: rowList){
 			
-			buf.append(id.substring(id.lastIndexOf("\\")+1,id.length())+"\t");
+			buf.append(id+"\t");
 		}
 		buf.append("\n");
 		for(String id: colList){
-			buf.append(id.substring(id.lastIndexOf("\\")+1,id.length())+"\t");
+			buf.append(id+"\t");
 		}
 		buf.append("\n");
 		for(int i=0;i<simMat.getRowDimension();i++){

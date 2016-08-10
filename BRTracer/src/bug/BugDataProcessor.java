@@ -3,10 +3,13 @@ package bug;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
@@ -48,6 +51,17 @@ import java.util.regex.Pattern;
  * BugDataProcessor is the class for Importing/Processing/Exporting Bug Data
  */
 public class BugDataProcessor {
+	
+	public static final FieldType TYPE_STORED = new FieldType();
+	static {
+		TYPE_STORED.setStored(true);
+		TYPE_STORED.setTokenized(true);
+		TYPE_STORED.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
+		TYPE_STORED.setStoreTermVectors(true);
+		TYPE_STORED.setStoreTermVectorPositions(true);
+		TYPE_STORED.freeze();
+	}
+	
 	/**
 	 * Import the bug report data to a list of Bug Class objects
 	 * @return
@@ -310,9 +324,9 @@ public class BugDataProcessor {
 			
 			org.apache.lucene.document.Document doc=new org.apache.lucene.document.Document();
 			StringField bugIDField= new StringField("bugID", oneBug.getBugId(), Store.YES);
-			TextField bugDescriptionField=new TextField("bugDescription", Splitter.split(oneBug.getBugDescription()),Store.YES);
-			TextField bugSummaryField=new TextField("bugSummary", Splitter.split(oneBug.getBugSummary()),Store.YES);
-			TextField bugInformationField=new TextField("bugInformation", Splitter.split(oneBug.getBugSummary())+" "+Splitter.split(oneBug.getBugDescription()),Store.YES);
+			Field bugDescriptionField=new Field("bugDescription", Splitter.split(oneBug.getBugDescription()),TYPE_STORED);
+			Field bugSummaryField=new Field("bugSummary", Splitter.split(oneBug.getBugSummary()),TYPE_STORED);
+			Field bugInformationField=new Field("bugInformation", Splitter.split(oneBug.getBugSummary())+" "+Splitter.split(oneBug.getBugDescription()),TYPE_STORED);
 			doc.add(bugIDField);
 			doc.add(bugDescriptionField);
 			doc.add(bugSummaryField);
