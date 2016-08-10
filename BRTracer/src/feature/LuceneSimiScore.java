@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.core.StopAnalyzer;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
@@ -118,18 +117,14 @@ public class LuceneSimiScore {
 		IndexReader codeReader = DirectoryReader.open(dir);
 
 		IndexSearcher searcher = new IndexSearcher(codeReader);
-		Similarity s=new OriginalTFIDFSimilarity();
+		Similarity s=new BM25Similarity();
 		searcher.setSimilarity(s);
 		QueryParser parser=new QueryParser("content", analyzer);
 		Query query=parser.parse("PowerShot this is a good day today");
-//		for (ScoreDoc oneScore:searcher.search(query,3).scoreDocs){
-//			System.out.println(searcher.explain(query, oneScore.doc));
-//		}
-		String testStr="PowerShot this is a good day today";
-		TokenStream stream=analyzer.tokenStream(null,new StringReader(testStr));
-		WordDelimiterFilter wdf= new WordDelimiterFilter(stream, WordDelimiterFilter.SPLIT_ON_CASE_CHANGE, null);
-		wdf.incrementToken();
-		
+		for (ScoreDoc oneScore:searcher.search(query,3).scoreDocs){
+			System.out.println(searcher.explain(query, oneScore.doc));
+		}
+
 //		System.out.println(wdf.toString());
 		
 		
