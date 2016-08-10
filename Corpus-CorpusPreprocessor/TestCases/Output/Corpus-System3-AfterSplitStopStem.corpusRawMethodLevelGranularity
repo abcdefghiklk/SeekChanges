@@ -1,0 +1,20 @@
+construct properti panel uml element prop panel lookup icon config loader tab prop orient 
+construct properti panel uml packag given paramet param titl titl panel param orient orient param icon icon titl prop panel string titl imag icon icon orient orient titl icon orient place element 
+method gui element ad proppanel subclass overrid place element wai want place element add field translat local label text field add field translat local label namespac namespac selector add namespac visibl panel add modifi panel add separ add field translat local label gener gener scroll add field translat local label special special scroll add separ add field translat local label own element own element scroll add field translat local label import element import element scroll todo replac previou line issu list list uml mutabl link list uml classifi import list model action add action remov add field translat local label import element scroll pane list add action action navig namespac add action action add add action action add data type add action action add enumer add action action stereotyp add action action tag definit add action action delet singl model element 
+return modifi panel panel modifi panel modifi panel modifi panel modifi panel creat border panel translat local label modifi modifi panel add uml generaliz element check box modifi panel add uml generaliz element leaf check box modifi panel add uml generaliz element root check box modifi panel 
+return gener scroll scroll pane scroll pane gener scroll gener scroll list list uml link list gener list model gener scroll scroll pane list gener scroll 
+return special scroll scroll pane scroll pane special scroll special scroll list list uml link list special list model special scroll scroll pane list special scroll 
+scrollpan import modelel scroll pane import element scroll import element scroll import element scroll scroll list import element list model import element scroll 
+constructor uml import element list model uml import element list model import element 
+org argouml uml ui uml model element list model build model list build model list target set element model facad import element target 
+org argouml uml ui uml model element list model valid element object valid element object element model facad import element target contain element 
+constructor uml classifi role base list model uml classifi import list model import element 
+org argouml uml ui uml model element list model build model list build model list set element model facad import element target 
+org argouml uml ui uml model element list model valid element object valid element object elem model facad model element elem model facad import element target contain elem 
+constructor action add action add 
+org argouml uml ui action add model element choic vector choic vector vec vector todo implement function model subsystem issu vec add model model manag helper possibl import target vec 
+org argouml uml ui action add model element select vector select vector vec vector vec add model facad import element target vec 
+org argouml uml ui action add model element dialog titl string dialog titl translat local dialog titl add import element 
+org argouml uml ui action add model element java util vector vector select object pack target model model manag helper set import element pack select 
+constructor action remov action remov translat local menu popup remov 
+java awt event action listen action perform java awt event action event action perform action event action perform model model manag helper remov import element target object remov 

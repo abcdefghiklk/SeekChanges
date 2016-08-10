@@ -1,0 +1,67 @@
+Preprocessing file:	TestCases\Input\System1\inputFile1_System1.java
+a.MyInterface.notPossible.m	3	String	ArrayList<String>	long	
+/**			 * comment for method m in inner class NotPossible			 * second row 			 */						void m(String s,ArrayList<String> l,long a[][])			{				//comment method not possible m				//second row				//third row				//4444 row				//555 row				//66 row				//7 row				//8row				//999				//10				/* 1234				 * ab				 */				int i=0;				System.out.println(i);			}	
+
+a.A.ma2	1	int	
+/**		 * some method ma2		 * 		 * @param i		 */		void ma2(int i)		{			}	
+
+a.A.ma3	0	
+void ma3()		{			//comments inside ma3			int j=0;			System.out.println(j);			}	
+
+a.A.AB.mab1	0	
+/**			 * mab1 comment			 */			void mab1()			{				}	
+
+a.A.AB.mab2	1	float	
+/**			 * @param j			 *            comment mab2			 */			void mab2(float j)			{				}	
+
+a.A.AB.ABC.mabc1	1	String	
+/**				 * @param s				 */				void mabc1(String s)				{					}	
+
+a.A.AB.ABC.mabc2	1	int	
+/**				 * @param j				 */				void mabc2(int j)				{					//mabc2					}	
+
+a.A.AB.ABD.mabd1	1	String	
+/**				 * @param s				 */				void mabd1(String s)				{					}	
+
+a.A.AB.ABD.mabd2	1	String	
+/**				 * @param s				 */				void mabd2(String s)				{					}	
+
+a.A.AB.ABD.mabd3	1	int	
+/**				 * comment mabd3				 * 				 * @param j				 */					void mabd3(int j)				{					}	
+
+a.A.ma4	1	long	
+/**		 * @param l		 */		void ma4(long l)		{			}	
+
+a.B.mb1	1	int	
+/**		 * @param i		 */		void mb1(int i)		{			}	
+
+a.B.mb2	1	ArrayList<String>	
+/**		 * @param s		 */		void mb2(ArrayList<String> s)		{			}	
+
+a.B.BE.mbe1	2	Hashtable<String,Integer>	int[]	
+/**			 * @param ht			 * @param b			 */						void mbe1(Hashtable<String,Integer> ht,int[] b)			{				}	
+
+a.B.BE.mbe2	1	String	
+/**			 * @param s			 */			void mbe2(String s)			{				}	
+
+a.B.mb3	0	
+/**		 * comment mb3		 */		void mb3()		{			}	
+
+a.C.mc1	0	
+/**		 * comment mc1		 */		void mc1()		{			//comment mc1			int i;			}	
+
+a.C.mc2	4	int	short	float	long	
+/**		 * @param i		 * @param s		 * @param f		 * @param l		 *            mc2 comment		 */		void mc2(int i,				short s,				float f,				long l)		{			//comment inside mc2		}	
+
+a.TestClass.main	1	String[]	
+/**		 * @param args		 */		public static void main(String[] args)		{			// TODO Auto-generated method stub		}	
+
+a.TestClass.hashCode	0	
+@SuppressWarnings("unused")		@Override		public int hashCode()		{			// TODO Auto-generated method stub			int i;			return super.hashCode();		}	
+
+a.TestClass.toString	0	
+@Override		public String toString()		{			// TODO Auto-generated method stub			return super.toString();		}	
+
+a.TestClass.InnerClass.innerMethodNumberOne	2	int	float	
+/**			 * @param parameter1			 * @param parameter2			 */			void innerMethodNumberOne(int parameter1,float parameter2)			{				}	
+

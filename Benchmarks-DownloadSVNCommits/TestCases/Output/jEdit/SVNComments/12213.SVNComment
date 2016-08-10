@@ -1,0 +1,1 @@
+Created Indexer interface and updated the AbstractFileIndexer and other indexers to work with it.

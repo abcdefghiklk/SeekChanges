@@ -1,0 +1,11 @@
+Revision: 12212
+Author: elberry
+Date: Wed Mar 12 00:58:11 EDT 2008
+Log:
+renaming Indexer to AbstractFileIndexer.
+
+List of files:
+ A /plugins/LucenePlugin/trunk/src/java/com/townsfolkdesigns/lucene/indexer/AbstractFileIndexer.java (from /plugins/LucenePlugin/trunk/src/java/com/townsfolkdesigns/lucene/indexer/Indexer.java:12202) - (file)
+ D /plugins/LucenePlugin/trunk/src/java/com/townsfolkdesigns/lucene/indexer/Indexer.java - (file)
+ M /plugins/LucenePlugin/trunk/src/java/com/townsfolkdesigns/lucene/indexer/FileTypeDelegatingIndexer.java - (file)
+

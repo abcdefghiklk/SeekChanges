@@ -1,0 +1,20 @@
+construct property panel uml elements prop panel lookup icon config loader tab props orientation 
+construct property panel uml packages given parameters param title title panel param orientation orientation param icon icon title prop panel string title image icon icon orientation orientation title icon orientation place elements 
+method gui elements added proppanel subclasses override place elements way want place elements add field translator localize label text field add field translator localize label namespace namespace selector add namespace visibility panel add modifiers panel add separator add field translator localize label generalizations generalization scroll add field translator localize label specializations specialization scroll add separator add field translator localize label owned elements owned elements scroll add field translator localize label imported elements imported elements scroll todo replace previous lines issue list list uml mutable linked list uml classifier imports list model action add action remove add field translator localize label imported elements scroll pane list add action action navigate namespace add action action add add action action add data type add action action add enumeration add action action stereotype add action action tag definition add action action delete single model element 
+returns modifiers panel panel modifiers panel modifiers panel modifiers panel modifiers panel create border panel translator localize label modifiers modifiers panel add uml generalizable element check box modifiers panel add uml generalizable element leaf check box modifiers panel add uml generalizable element root check box modifiers panel 
+returns generalization scroll scroll pane scroll pane generalization scroll generalization scroll list list uml linked list generalization list model generalization scroll scroll pane list generalization scroll 
+returns specialization scroll scroll pane scroll pane specialization scroll specialization scroll list list uml linked list specialization list model specialization scroll scroll pane list specialization scroll 
+scrollpane imported modelelements scroll pane imported elements scroll imported elements scroll imported elements scroll scroll list imported element list model imported elements scroll 
+constructor uml imported element list model uml imported element list model imported element 
+org argouml uml ui uml model element list model build model list build model list target set elements model facade imported elements target 
+org argouml uml ui uml model element list model valid element object valid element object element model facade imported elements target contains element 
+constructor uml classifier role base list model uml classifier imports list model imported element 
+org argouml uml ui uml model element list model build model list build model list set elements model facade imported elements target 
+org argouml uml ui uml model element list model valid element object valid element object elem model facade model element elem model facade imported elements target contains elem 
+constructor action add action add 
+org argouml uml ui action add model element choices vector choices vector vec vector todo implement function model subsystem issue vec add model model management helper possible imports target vec 
+org argouml uml ui action add model element selected vector selected vector vec vector vec add model facade imported elements target vec 
+org argouml uml ui action add model element dialog title string dialog title translator localize dialog title add imported elements 
+org argouml uml ui action add model element java util vector vector selected object pack target model model management helper set imported elements pack selected 
+constructor action remove action remove translator localize menu popup remove 
+java awt event action listener action performed java awt event action event action performed action event action performed model model management helper remove imported element target object remove 

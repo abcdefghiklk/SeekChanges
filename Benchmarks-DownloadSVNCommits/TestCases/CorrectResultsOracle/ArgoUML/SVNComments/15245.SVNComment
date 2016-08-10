@@ -1,0 +1,1 @@
+Issue 5232: Don't create a class in the process of creating an associationclass (looks like a hack copied from old NSUML implementation)

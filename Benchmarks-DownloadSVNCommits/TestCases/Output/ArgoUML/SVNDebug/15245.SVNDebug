@@ -1,0 +1,9 @@
+Revision: 15245
+Author: bobtarling
+Date: Sat Jul 12 18:45:44 BST 2008
+Log:
+Issue 5232: Don't create a class in the process of creating an associationclass (looks like a hack copied from old NSUML implementation)
+
+List of files:
+ M /trunk/src/argouml-core-model-mdr/src/org/argouml/model/mdr/CoreFactoryMDRImpl.java - (unknown)
+

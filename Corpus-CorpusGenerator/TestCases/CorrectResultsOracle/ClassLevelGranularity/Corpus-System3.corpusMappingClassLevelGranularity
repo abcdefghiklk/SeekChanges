@@ -1,0 +1,5 @@
+org.argouml.uml.ui.model_management.PropPanelPackage
+org.argouml.uml.ui.model_management.UMLPackageImportedElementListModel
+org.argouml.uml.ui.model_management.UMLClassifierPackageImportsListModel
+org.argouml.uml.ui.model_management.ActionAddPackageImport
+org.argouml.uml.ui.model_management.ActionRemovePackageImport

@@ -1,0 +1,12 @@
+Revision: 12213
+Author: elberry
+Date: Wed Mar 12 01:52:47 EDT 2008
+Log:
+Created Indexer interface and updated the AbstractFileIndexer and other indexers to work with it.
+
+List of files:
+ M /plugins/LucenePlugin/trunk/src/java/com/townsfolkdesigns/lucene/indexer/AbstractFileIndexer.java - (file)
+ M /plugins/LucenePlugin/trunk/src/java/com/townsfolkdesigns/lucene/jedit/LucenePluginIndexer.java - (file)
+ A /plugins/LucenePlugin/trunk/src/java/com/townsfolkdesigns/lucene/indexer/Indexer.java - (file)
+ M /plugins/LucenePlugin/trunk/src/java/com/townsfolkdesigns/lucene/indexer/FileTypeDelegatingIndexer.java - (file)
+

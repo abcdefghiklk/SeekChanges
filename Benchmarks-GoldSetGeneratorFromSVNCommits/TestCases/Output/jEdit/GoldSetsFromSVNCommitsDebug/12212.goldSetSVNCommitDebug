@@ -1,0 +1,397 @@
+SVN Commit: 12212
+File Name and Type: A	plugins_LucenePlugin_trunk_src_java_com_townsfolkdesigns_lucene_indexer_AbstractFileIndexer.java
+Reading file: DummyJavaFileForComparisonForAddedClasses.java
+Reading file: TestCases/Input/jEdit/SVNFilesSideBySide/12212/plugins_LucenePlugin_trunk_src_java_com_townsfolkdesigns_lucene_indexer_AbstractFileIndexer.java.v12212
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.AbstractFileIndexer	0	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getFileFilter	0	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getIndexStore	0	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getIndexWriter	0	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getLocations	0	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.isRecursivelyIndexDirectoriesOn	0	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.run	0	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setFileFilter	1	FileFilter	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setIndexStore	1	String	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setIndexWriter	1	IndexWriter	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setLocations	1	String[]	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setRecursivelyIndexDirectoriesOn	1	boolean	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.countAndIndexFile	1	File	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.indexDirectory	1	File	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getDirectoriesIndexed	0	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setDirectoriesIndexed	1	int	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getFilesIndexed	0	
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setFilesIndexed	1	int	
+List of methods:
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.AbstractFileIndexer()
+{
+  String currentDirectory=System.getProperty("user.dir");
+  File indexStoreDirectory=new File(currentDirectory,"indexes");
+  File indexStoreFile=new File(indexStoreDirectory,"default");
+  setIndexStore(indexStoreFile.getPath());
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getFileFilter()
+{
+  return fileFilter;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getIndexStore()
+{
+  return indexStore;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getIndexWriter()
+{
+  return indexWriter;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getLocations()
+{
+  return locations;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.isRecursivelyIndexDirectoriesOn()
+{
+  return recursivelyIndexDirectoriesOn;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.run()
+{
+  if (getIndexWriter() != null) {
+    setDirectoriesIndexed(0);
+    setFilesIndexed(0);
+    File locationFile=null;
+    Document document=null;
+    if (log.isInfoEnabled()) {
+      log.info("Indexing started " + new Date() + " - locations found: "+ getLocations().length);
+    }
+    for (    String location : getLocations()) {
+      locationFile=new File(location);
+      if (locationFile.isDirectory()) {
+        indexDirectory(locationFile);
+      }
+ else       if (getFileFilter().accept(locationFile)) {
+        document=countAndIndexFile(locationFile);
+        if (document != null) {
+          try {
+            getIndexWriter().addDocument(document);
+          }
+ catch (          Exception e) {
+            log.error(e.getMessage(),e);
+          }
+        }
+      }
+    }
+    if (log.isInfoEnabled()) {
+      log.info("Indexing completed " + new Date() + " - directories: "+ directoriesIndexed+ " | files: "+ filesIndexed);
+    }
+    if (getIndexWriter() != null) {
+      try {
+        getIndexWriter().optimize();
+        getIndexWriter().close();
+      }
+ catch (      Exception ex) {
+        log.error(ex.getMessage(),ex);
+      }
+    }
+  }
+ else {
+    log.warn("No index writer provided.");
+  }
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setFileFilter(FileFilter)
+{
+  this.fileFilter=fileFilter;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setIndexStore(String)
+{
+  this.indexStore=indexStore;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setIndexWriter(IndexWriter)
+{
+  this.indexWriter=indexWriter;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setLocations(String[])
+{
+  this.locations=locations;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setRecursivelyIndexDirectoriesOn(boolean)
+{
+  this.recursivelyIndexDirectoriesOn=recursivelyIndexDirectoriesOn;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.countAndIndexFile(File)
+{
+  filesIndexed++;
+  return indexFile(locationFile);
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.indexDirectory(File)
+{
+  directoriesIndexed++;
+  File[] files=null;
+  if (getFileFilter() != null) {
+    files=directory.listFiles(getFileFilter());
+  }
+ else {
+    files=directory.listFiles();
+  }
+  Document document=null;
+  for (  File file : files) {
+    if (!file.isDirectory()) {
+      document=countAndIndexFile(file);
+      if (document != null) {
+        try {
+          getIndexWriter().addDocument(document);
+        }
+ catch (        Exception e) {
+          log.error(e.getMessage(),e);
+        }
+      }
+    }
+ else     if (isRecursivelyIndexDirectoriesOn()) {
+      indexDirectory(file);
+    }
+  }
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getDirectoriesIndexed()
+{
+  return directoriesIndexed;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setDirectoriesIndexed(int)
+{
+  this.directoriesIndexed=directoriesIndexed;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getFilesIndexed()
+{
+  return filesIndexed;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setFilesIndexed(int)
+{
+  this.filesIndexed=filesIndexed;
+}
+
+
+-------------------------------------
+ListOfCorpusMethodsPreviousVersion size: 0
+ListOfCorpusMethodsCurrentVersion size: 18
+Gold set methods: 
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.AbstractFileIndexer()
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getFileFilter()
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getIndexStore()
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getIndexWriter()
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getLocations()
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.isRecursivelyIndexDirectoriesOn()
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.run()
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setFileFilter(FileFilter)
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setIndexStore(String)
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setIndexWriter(IndexWriter)
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setLocations(String[])
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setRecursivelyIndexDirectoriesOn(boolean)
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.countAndIndexFile(File)
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.indexDirectory(File)
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getDirectoriesIndexed()
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setDirectoriesIndexed(int)
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.getFilesIndexed()
+com.townsfolkdesigns.lucene.indexer.AbstractFileIndexer.setFilesIndexed(int)
+
+##########################################################
+
+File Name and Type: M	plugins_LucenePlugin_trunk_src_java_com_townsfolkdesigns_lucene_indexer_FileTypeDelegatingIndexer.java
+Reading file: TestCases/Input/jEdit/SVNFilesSideBySide/12212/plugins_LucenePlugin_trunk_src_java_com_townsfolkdesigns_lucene_indexer_FileTypeDelegatingIndexer.java.vPrevious
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.FileTypeDelegatingIndexer	0	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDefaultDocumentParser	0	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDocumentParsers	0	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.setDefaultDocumentParser	1	FileDocumentParser	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.setDocumentParsers	1	Collection<FileDocumentParser>	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.indexFile	1	File	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDocumentParsers	1	String	
+List of methods:
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.FileTypeDelegatingIndexer()
+{
+  documentParsers=new LinkedHashMap<String,Collection<FileDocumentParser>>();
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDefaultDocumentParser()
+{
+  return defaultDocumentParser;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDocumentParsers()
+{
+  Collection<FileDocumentParser> documentParserCollection=new ArrayList<FileDocumentParser>();
+  for (  Collection<FileDocumentParser> documentParsers : this.documentParsers.values()) {
+    documentParserCollection.addAll(documentParsers);
+  }
+  return documentParserCollection;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.setDefaultDocumentParser(FileDocumentParser)
+{
+  this.defaultDocumentParser=defaultDocumentParser;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.setDocumentParsers(Collection<FileDocumentParser>)
+{
+  Collection<FileDocumentParser> knownParsers=null;
+  for (  FileDocumentParser parser : indexers) {
+    for (    String type : parser.getTypes()) {
+      knownParsers=documentParsers.get(type);
+      if (knownParsers == null) {
+        knownParsers=new ArrayList<FileDocumentParser>();
+        documentParsers.put(type,knownParsers);
+      }
+      knownParsers.add(parser);
+    }
+  }
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.indexFile(File)
+{
+  Document document=new Document();
+  String fileType=FileUtils.getFileType(file);
+  Collection<FileDocumentParser> documentParsers=getDocumentParsers(fileType);
+  if (documentParsers != null) {
+    if (log.isDebugEnabled()) {
+      log.debug("File type: " + fileType + " | parser count: "+ documentParsers.size());
+    }
+    for (    FileDocumentParser documentParser : documentParsers) {
+      documentParser.parse(file,document);
+    }
+  }
+ else {
+    if (log.isDebugEnabled()) {
+      log.debug("No parsers found for file type, \"" + fileType + "\" using default parser.");
+    }
+    getDefaultDocumentParser().parse(file,document);
+  }
+  return document;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDocumentParsers(String)
+{
+  return documentParsers.get(fileType);
+}
+
+
+-------------------------------------
+Reading file: TestCases/Input/jEdit/SVNFilesSideBySide/12212/plugins_LucenePlugin_trunk_src_java_com_townsfolkdesigns_lucene_indexer_FileTypeDelegatingIndexer.java.v12212
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.FileTypeDelegatingIndexer	0	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDefaultDocumentParser	0	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDocumentParsers	0	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.setDefaultDocumentParser	1	FileDocumentParser	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.setDocumentParsers	1	Collection<FileDocumentParser>	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.indexFile	1	File	
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDocumentParsers	1	String	
+List of methods:
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.FileTypeDelegatingIndexer()
+{
+  documentParsers=new LinkedHashMap<String,Collection<FileDocumentParser>>();
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDefaultDocumentParser()
+{
+  return defaultDocumentParser;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDocumentParsers()
+{
+  Collection<FileDocumentParser> documentParserCollection=new ArrayList<FileDocumentParser>();
+  for (  Collection<FileDocumentParser> documentParsers : this.documentParsers.values()) {
+    documentParserCollection.addAll(documentParsers);
+  }
+  return documentParserCollection;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.setDefaultDocumentParser(FileDocumentParser)
+{
+  this.defaultDocumentParser=defaultDocumentParser;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.setDocumentParsers(Collection<FileDocumentParser>)
+{
+  Collection<FileDocumentParser> knownParsers=null;
+  for (  FileDocumentParser parser : indexers) {
+    for (    String type : parser.getTypes()) {
+      knownParsers=documentParsers.get(type);
+      if (knownParsers == null) {
+        knownParsers=new ArrayList<FileDocumentParser>();
+        documentParsers.put(type,knownParsers);
+      }
+      knownParsers.add(parser);
+    }
+  }
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.indexFile(File)
+{
+  Document document=new Document();
+  String fileType=FileUtils.getFileType(file);
+  Collection<FileDocumentParser> documentParsers=getDocumentParsers(fileType);
+  if (documentParsers != null) {
+    if (log.isDebugEnabled()) {
+      log.debug("File type: " + fileType + " | parser count: "+ documentParsers.size());
+    }
+    for (    FileDocumentParser documentParser : documentParsers) {
+      documentParser.parse(file,document);
+    }
+  }
+ else {
+    if (log.isDebugEnabled()) {
+      log.debug("No parsers found for file type, \"" + fileType + "\" using default parser.");
+    }
+    getDefaultDocumentParser().parse(file,document);
+  }
+  return document;
+}
+
+
+com.townsfolkdesigns.lucene.indexer.FileTypeDelegatingIndexer.getDocumentParsers(String)
+{
+  return documentParsers.get(fileType);
+}
+
+
+-------------------------------------
+ListOfCorpusMethodsPreviousVersion size: 7
+ListOfCorpusMethodsCurrentVersion size: 7
+Gold set methods: 
+
+##########################################################
+

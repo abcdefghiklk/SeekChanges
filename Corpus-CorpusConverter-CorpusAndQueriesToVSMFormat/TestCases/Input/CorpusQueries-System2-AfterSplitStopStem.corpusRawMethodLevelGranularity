@@ -1,0 +1,4 @@
+input count 
+add kei noword
+bind kei bind 
+param evt noword2 evt evt

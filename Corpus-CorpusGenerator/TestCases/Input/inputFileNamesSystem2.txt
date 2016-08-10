@@ -1,0 +1,2 @@
+TestCases\Input\System2\inputFile1_System2.java
+TestCases\Input\System2\inputFile2_System2.java

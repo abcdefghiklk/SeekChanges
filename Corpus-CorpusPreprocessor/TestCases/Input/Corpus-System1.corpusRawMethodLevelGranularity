@@ -1,0 +1,22 @@
+/**			 * comment for method m in inner class NotPossible			 * second row 			 */						void m(String s,ArrayList<String> l,long a[][])			{				//comment method not possible m				//second row				//third row				//4444 row				//555 row				//66 row				//7 row				//8row				//999				//10				/* 1234				 * ab				 */				int i=0;				System.out.println(i);			}	
+/**		 * some method ma2		 * 		 * @param i		 */		void ma2(int i)		{			}	
+void ma3()		{			//comments inside ma3			int j=0;			System.out.println(j);			}	
+/**			 * mab1 comment			 */			void mab1()			{				}	
+/**			 * @param j			 *            comment mab2			 */			void mab2(float j)			{				}	
+/**				 * @param s				 */				void mabc1(String s)				{					}	
+/**				 * @param j				 */				void mabc2(int j)				{					//mabc2					}	
+/**				 * @param s				 */				void mabd1(String s)				{					}	
+/**				 * @param s				 */				void mabd2(String s)				{					}	
+/**				 * comment mabd3				 * 				 * @param j				 */					void mabd3(int j)				{					}	
+/**		 * @param l		 */		void ma4(long l)		{			}	
+/**		 * @param i		 */		void mb1(int i)		{			}	
+/**		 * @param s		 */		void mb2(ArrayList<String> s)		{			}	
+/**			 * @param ht			 * @param b			 */						void mbe1(Hashtable<String,Integer> ht,int[] b)			{				}	
+/**			 * @param s			 */			void mbe2(String s)			{				}	
+/**		 * comment mb3		 */		void mb3()		{			}	
+/**		 * comment mc1		 */		void mc1()		{			//comment mc1			int i;			}	
+/**		 * @param i		 * @param s		 * @param f		 * @param l		 *            mc2 comment		 */		void mc2(int i,				short s,				float f,				long l)		{			//comment inside mc2		}	
+/**		 * @param args		 */		public static void main(String[] args)		{			// TODO Auto-generated method stub		}	
+@SuppressWarnings("unused")		@Override		public int hashCode()		{			// TODO Auto-generated method stub			int i;			return super.hashCode();		}	
+@Override		public String toString()		{			// TODO Auto-generated method stub			return super.toString();		}	
+/**			 * @param parameter1			 * @param parameter2			 */			void innerMethodNumberOne(int parameter1,float parameter2)			{				}	

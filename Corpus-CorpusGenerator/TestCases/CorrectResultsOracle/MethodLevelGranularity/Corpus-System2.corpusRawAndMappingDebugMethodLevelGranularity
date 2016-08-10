@@ -1,0 +1,71 @@
+Preprocessing file:	TestCases\Input\System2\inputFile1_System2.java
+org.gjt.sp.jedit.input.AbstractInputHandler.AbstractInputHandler	0	
+public AbstractInputHandler()		{			repeatCount = 1;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.addKeyBinding	2	String	String	
+/**		 * Adds a key binding to this input handler. The key binding is		 * a list of white space separated key strokes of the form		 * <i>[modifiers+]key</i> where modifier is C for Control, A for Alt,		 * or S for Shift, and key is either a character (a-z) or a field		 * name in the KeyEvent class prefixed with VK_ (e.g., BACK_SPACE)		 * @param keyBinding The key binding		 * @param action The action		 * @since jEdit 4.2pre1		 */		public void addKeyBinding(String keyBinding, String action)		{			addKeyBinding(keyBinding,(Object)action);		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.addKeyBinding	2	String	E	
+/**		 * Adds a key binding to this input handler. The key binding is		 * a list of white space separated key strokes of the form		 * <i>[modifiers+]key</i> where modifier is C for Control, A for Alt,		 * or S for Shift, and key is either a character (a-z) or a field		 * name in the KeyEvent class prefixed with VK_ (e.g., BACK_SPACE)		 * @param keyBinding The key binding		 * @param action The action		 */		public void addKeyBinding(String keyBinding, E action)		{			addKeyBinding(keyBinding,(Object)action);		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.addKeyBinding	2	String	Object	
+/**		 * Adds a key binding to this input handler. The key binding is		 * a list of white space separated key strokes of the form		 * <i>[modifiers+]key</i> where modifier is C for Control, A for Alt,		 * or S for Shift, and key is either a character (a-z) or a field		 * name in the KeyEvent class prefixed with VK_ (e.g., BACK_SPACE)		 * @param keyBinding The key binding		 * @param action The action		 * @since jEdit 4.3pre1		 */		public void addKeyBinding(String keyBinding, Object action)		{			Hashtable current = bindings;				String prefixStr = null;				StringTokenizer st = new StringTokenizer(keyBinding);			while(st.hasMoreTokens())			{				String keyCodeStr = st.nextToken();				if(prefixStr == null)					prefixStr = keyCodeStr;				else					prefixStr = prefixStr + " " + keyCodeStr;					KeyEventTranslator.Key keyStroke = KeyEventTranslator.parseKey(keyCodeStr);				if(keyStroke == null)					return;					if(st.hasMoreTokens())				{					Object o = current.get(keyStroke);					if(o instanceof Hashtable)						current = (Hashtable)o;					else					{						Hashtable hash = new Hashtable();						hash.put(PREFIX_STR,prefixStr);						o = hash;						current.put(keyStroke,o);						current = (Hashtable)o;					}				}				else					current.put(keyStroke,action);			}		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.removeKeyBinding	1	String	
+/**		 * Removes a key binding from this input handler. This is not yet		 * implemented.		 * @param keyBinding The key binding		 */		public void removeKeyBinding(String keyBinding)		{			Hashtable current = bindings;				StringTokenizer st = new StringTokenizer(keyBinding);			while(st.hasMoreTokens())			{				String keyCodeStr = st.nextToken();				KeyEventTranslator.Key keyStroke = KeyEventTranslator.parseKey(keyCodeStr);				if(keyStroke == null)					return;					if(st.hasMoreTokens())				{					Object o = current.get(keyStroke);					if(o instanceof Hashtable)						current = ((Hashtable)o);					else if(o != null)					{						// we have binding foo						// but user asks to remove foo bar?						current.remove(keyStroke);						return;					}					else					{						// user asks to remove non-existent						return;					}				}				else					current.remove(keyStroke);			}		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.removeAllKeyBindings	0	
+/**		 * Removes all key bindings from this input handler.		 */		public void removeAllKeyBindings()		{			bindings.clear();		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.getKeyBinding	1	String	
+/**		 * Returns either an edit action, or a hashtable if the specified key		 * is a prefix.		 * @param keyBinding The key binding		 * @since jEdit 3.2pre5		 */		public Object getKeyBinding(String keyBinding)		{			Hashtable current = bindings;			StringTokenizer st = new StringTokenizer(keyBinding);				while(st.hasMoreTokens())			{				KeyEventTranslator.Key keyStroke = KeyEventTranslator.parseKey(					st.nextToken());				if(keyStroke == null)					return null;					if(st.hasMoreTokens())				{					Object o = current.get(keyStroke);					if(o instanceof Hashtable)					{						if(!st.hasMoreTokens())							return o;						else							current = (Hashtable)o;					}					else						return o;				}				else				{					return current.get(keyStroke);				}			}				return null;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.getLastActionCount	0	
+/**		 * Returns the number of times the last action was executed.		 * It can be used with smartHome and smartEnd		 * @return the number of times the last action was executed		 * @since jEdit 2.5pre5		 */		public int getLastActionCount()		{			return lastActionCount;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.resetLastActionCount	0	
+/**		 * Resets the last action count. This should be called when an		 * editing operation that is not an action is invoked, for example		 * a mouse click.		 * @since jEdit 4.0pre1		 */		public void resetLastActionCount()		{			lastActionCount = 0;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.getKeyEventInterceptor	0	
+public KeyListener getKeyEventInterceptor()		{			return keyEventInterceptor;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.setKeyEventInterceptor	1	KeyListener	
+/**		 * Sets the listener that will handle all key events in this		 * view. For example, the complete word command uses this so		 * that all key events are passed to the word list popup while		 * it is visible.		 * @param keyEventInterceptor the KeyListener that will receive the events		 */		public void setKeyEventInterceptor(KeyListener keyEventInterceptor)		{			this.keyEventInterceptor = keyEventInterceptor;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.isPrefixActive	0	
+/**		 * Returns if a prefix key has been pressed.		 */		public boolean isPrefixActive()		{			return readNextChar != null;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.setBindings	1	Hashtable	
+/**		 * Replace the set of key bindings.		 * @since jEdit 4.3pre1		 */		public void setBindings(Hashtable bindings)		{			this.bindings = this.currentBindings = bindings;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.setCurrentBindings	1	Hashtable	
+public void setCurrentBindings(Hashtable bindings)		{			currentBindings = bindings;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.sendShortcutPrefixOff	0	
+/**		 *  If 		 */		protected void sendShortcutPrefixOff()		{			if(shortcutOn)			{				ShortcutPrefixActiveEvent.firePrefixStateChange(null, false);				shortcutOn = false;			}		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.processKeyEventKeyStrokeHandling	4	KeyEvent	int	String	boolean	
+/**		 *		 * @param evt the keyboard event		 * @param from the source, it can be {@link org.gjt.sp.jedit.View#VIEW},		 * {@link org.gjt.sp.jedit.View#ACTION_BAR} or {@link org.gjt.sp.jedit.View#TEXT_AREA}		 * @param mode the mode is "press" or "type" and is used for debug only  		 * @param global tell if the event comes from the DefaultKeyboardFocusManager or not		 */		protected void processKeyEventKeyStrokeHandling(KeyEvent evt, int from, String mode, boolean global)		{			KeyEventTranslator.Key keyStroke = KeyEventTranslator.translateKeyEvent2(evt);				if(keyStroke != null)			{				keyStroke.setIsFromGlobalContext(global);				if(Debug.DUMP_KEY_EVENTS)				{					Log.log(Log.DEBUG,this,"Translated (key "+mode+"): "+keyStroke+" from "+from);				}				boolean consumed = false;				if(handleKey(keyStroke,keyStroke.isPhantom()))				{					evt.consume();						consumed = true;				}				if(Debug.DUMP_KEY_EVENTS)				{					Log.log(Log.DEBUG,this,"Translated (key "+mode+"): "+keyStroke+" from "+from+": consumed="+consumed+'.');				}			}		}	
+
+Preprocessing file:	TestCases\Input\System2\inputFile2_System2.java
+org.gjt.sp.jedit.input.AbstractInputHandler.AbstractInputHandler	0	
+public AbstractInputHandler()		{			repeatCount = 1;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.getLastActionCount	0	
+/**		 * Returns the number of times the last action was executed.		 * It can be used with smartHome and smartEnd		 * @return the number of times the last action was executed		 * @since jEdit 2.5pre5		 */		public int getLastActionCount()		{			return lastActionCount;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.resetLastActionCount	0	
+/**		 * Resets the last action count. This should be called when an		 * editing operation that is not an action is invoked, for example		 * a mouse click.		 * @since jEdit 4.0pre1		 */		public void resetLastActionCount()		{			lastActionCount = 0;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.getKeyEventInterceptor	0	
+public KeyListener getKeyEventInterceptor()		{			return keyEventInterceptor;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.setKeyEventInterceptor	1	KeyListener	
+/**		 * Sets the listener that will handle all key events in this		 * view. For example, the complete word command uses this so		 * that all key events are passed to the word list popup while		 * it is visible.		 * @param keyEventInterceptor the KeyListener that will receive the events		 */		public void setKeyEventInterceptor(KeyListener keyEventInterceptor)		{			this.keyEventInterceptor = keyEventInterceptor;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.isPrefixActive	0	
+/**		 * Returns if a prefix key has been pressed.		 */		public boolean isPrefixActive()		{			return readNextChar != null;		}	
+
+org.gjt.sp.jedit.input.AbstractInputHandler.processKeyEventKeyStrokeHandling	4	KeyEvent	int	String	boolean	
+/**		 *		 * @param evt the keyboard event		 * @param from the source, it can be {@link org.gjt.sp.jedit.View#VIEW},		 * {@link org.gjt.sp.jedit.View#ACTION_BAR} or {@link org.gjt.sp.jedit.View#TEXT_AREA}		 * @param mode the mode is "press" or "type" and is used for debug only  		 * @param global tell if the event comes from the DefaultKeyboardFocusManager or not		 */		protected void processKeyEventKeyStrokeHandling(KeyEvent evt, int from, String mode, boolean global)		{			KeyEventTranslator.Key keyStroke = KeyEventTranslator.translateKeyEvent2(evt);				if(keyStroke != null)			{				keyStroke.setIsFromGlobalContext(global);				if(Debug.DUMP_KEY_EVENTS)				{					Log.log(Log.DEBUG,this,"Translated (key "+mode+"): "+keyStroke+" from "+from);				}				boolean consumed = false;				if(handleKey(keyStroke,keyStroke.isPhantom()))				{					evt.consume();						consumed = true;				}				if(Debug.DUMP_KEY_EVENTS)				{					Log.log(Log.DEBUG,this,"Translated (key "+mode+"): "+keyStroke+" from "+from+": consumed="+consumed+'.');				}			}		}	
+

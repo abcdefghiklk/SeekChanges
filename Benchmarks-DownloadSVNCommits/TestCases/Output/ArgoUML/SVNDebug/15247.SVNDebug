@@ -1,0 +1,11 @@
+Revision: 15247
+Author: maurelio1234
+Date: Sun Jul 13 08:58:41 BST 2008
+Log:
+adding ext
+
+List of files:
+ R /trunk/src/argouml-app/ext/argouml-critics.jar (from /branches/gsoc2008/work_criticsprofiles_maurelio1234/ext/argouml-critics.jar:15245) - (unknown)
+ R /trunk/src/argouml-app/ext/jbeans.jar (from /branches/gsoc2008/work_criticsprofiles_maurelio1234/ext/jbeans.jar:15245) - (unknown)
+ A /trunk/src/argouml-app/ext (from /branches/gsoc2008/work_criticsprofiles_maurelio1234/ext:15245) - (unknown)
+
