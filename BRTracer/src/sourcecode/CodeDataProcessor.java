@@ -29,6 +29,7 @@ import config.Config;
 import sourcecode.ast.FileParser;
 import utils.Stem;
 import utils.Stopword;
+import utils.TextAnalyzer;
 
 /**
  * I/O for source code data
@@ -438,8 +439,8 @@ public class CodeDataProcessor {
 		Version matchVersion=Version.LATEST;
 		String indexStorePath=Paths.get(dstDirPath,"index").toString();
 		Directory dir = FSDirectory.open(Paths.get(indexStorePath));
-		Analyzer analyzer = new StandardAnalyzer();
-		analyzer.setVersion(matchVersion);
+		Analyzer analyzer = new TextAnalyzer();
+//		analyzer.setVersion(matchVersion);
 		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 		iwc.setOpenMode(OpenMode.CREATE);
 		IndexWriter writer = new IndexWriter(dir, iwc);

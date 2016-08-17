@@ -27,6 +27,7 @@ import utils.DateFormat;
 import utils.Splitter;
 import utils.Stem;
 import utils.Stopword;
+import utils.TextAnalyzer;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -313,8 +314,8 @@ public class BugDataProcessor {
 		Version matchVersion=Version.LATEST;
 		String indexStorePath=Paths.get(dstDirPath,"index").toString();
 		Directory dir = FSDirectory.open(Paths.get(indexStorePath));
-		Analyzer analyzer = new StandardAnalyzer();
-		analyzer.setVersion(matchVersion);
+		Analyzer analyzer = new TextAnalyzer();
+//		analyzer.setVersion(matchVersion);
 		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 		iwc.setOpenMode(OpenMode.CREATE);
 		IndexWriter writer = new IndexWriter(dir, iwc);
@@ -334,6 +335,19 @@ public class BugDataProcessor {
 			writer.addDocument(doc);
 		}
 		writer.close();
+		
+		//the file containing fixed classes(files) for a bug
+		String fixedClassesFilePath = Paths.get(dstDirPath, "fixedFiles").toString();
+		FileWriter fixedClassesWriter=new FileWriter(fixedClassesFilePath,true);
+		for (BugRecord _bug: bugList){
+			String fixedFilesString=_bug.getBugId();
+			for (String fileName: _bug.getFixedFileSet()){
+				fixedFilesString+="\t"+fileName;
+			}
+			fixedClassesWriter.write(fixedFilesString.trim()+"\n");
+			fixedClassesWriter.flush();
+		}
+		fixedClassesWriter.close();
 		return;
 	}
 	

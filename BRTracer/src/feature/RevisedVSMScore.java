@@ -1,5 +1,6 @@
 package feature;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import sourcecode.CodeFeatureExtractor;
@@ -41,6 +42,34 @@ public class RevisedVSMScore {
 			}
 		}
 		MatrixUtil.exportMatrix(bugVecList,codeVecList,simMat,simMatFilePath);
+	}
+	
+	public static void generate(String originalSimMatFilePath, String codeLengthFilePath, String revisedSimMatFilePath) throws Exception{
+		int dicSize=Config.getInstance().getDicSize();
+		
+		
+		//Load the code length for each code file
+		HashMap<String, Double> codeLengthMap = CodeFeatureExtractor.loadCodeLength(codeLengthFilePath);
+		
+		//Calculate and save the similarity between each code and each bug in the file
+//		Matrix simMat=MatrixUtil.computeSimilarityMatrix(bugVecList,codeVecList,dicSize);
+		
+		ArrayList<String> bugIDArray=new ArrayList<String>();
+		ArrayList<String> codeIDArray=new ArrayList<String>();
+		Matrix simMat=MatrixUtil.importSimilarityMatrix(bugIDArray, codeIDArray, originalSimMatFilePath);
+
+
+//		Matrix []bugVecArray=bugVecList.values().toArray(new Matrix[0]);
+//		Matrix []codeVecArray=codeVecList.values().toArray(new Matrix[0]);
+		
+		String []codeIDList=codeIDArray.toArray(new String[0]);
+		for (int j=0; j<simMat.getColumnDimension(); j++){
+			double revisedLength= codeLengthMap.get(codeIDList[j]);
+			for (int i=0; i<simMat.getRowDimension(); i++){
+				simMat.set(i, j, simMat.get(i, j)*revisedLength);
+			}
+		}
+		MatrixUtil.exportMatrix(bugIDArray,codeIDArray,simMat,revisedSimMatFilePath);
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

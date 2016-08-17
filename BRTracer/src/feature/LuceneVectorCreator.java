@@ -1,5 +1,10 @@
 package feature;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,13 +13,18 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.document.FieldType;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermsEnum;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -34,14 +44,21 @@ import edu.udo.cs.wvtool.main.WVTFileInputList;
 import edu.udo.cs.wvtool.wordlist.WVTWordList;
 
 public class LuceneVectorCreator {
-	
+	public static final FieldType TYPE_STORED = new FieldType();
+	static {
+		TYPE_STORED.setStored(true);
+		TYPE_STORED.setTokenized(true);
+		TYPE_STORED.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
+		TYPE_STORED.setStoreTermVectors(true);
+		TYPE_STORED.setStoreTermVectorPositions(true);
+		TYPE_STORED.freeze();
+	}
 	
 	/**
-	 * Create the code and bug vectors and save them in files
+	 * 
 	 * @param bugCorpusDirPath
 	 * @param codeCorpusDirPath
-	 * @param bugVecFilePath
-	 * @param codeVecFilePath
+	 * @param simMatFilePath
 	 * @throws Exception
 	 */
 	public static void generate(String bugCorpusDirPath, String codeCorpusDirPath, String simMatFilePath) throws Exception{
@@ -50,6 +67,9 @@ public class LuceneVectorCreator {
 		IndexReader codeReader = DirectoryReader.open(codeDir);
 		
 		int codeNum=codeReader.numDocs();
+		
+		String codeVectorFile = "C:/Users/ql29/Documents/EClipse/BugLocatorTool/tmp/output_2.txt";
+		FileWriter writer = new FileWriter(codeVectorFile);
 		
 		HashMap<String, HashMap<String, Double>> codeVectorList = new HashMap<String, HashMap<String, Double>>();
 		int sum=0;
@@ -61,16 +81,23 @@ public class LuceneVectorCreator {
 	//			int totalTermCount = (int) codeReader.getTermVector(i, "content").size();
 				BytesRef str=new BytesRef();
 				HashMap<String, Double> documentVec = new HashMap<String, Double>();
+				StringBuffer buf = new StringBuffer();
+				int docLength = 0;
 				while((str=iter.next())!=null){
 					String term=str.utf8ToString();
+					
 					int termFreq = (int)iter.totalTermFreq();
 					int docFreq = codeReader.docFreq(new Term("content",term));
-					double tfidfWeight = (Math.log(termFreq)+1) * Math.log((codeNum+0.5d)/(docFreq+0.5d));
+					buf.append(term+":"+termFreq+" "+docFreq+"\t");
+					docLength+=termFreq;
+					double tfidfWeight = (Math.log(termFreq)+1) * Math.log((codeNum)/(docFreq));
 					documentVec.put(term, tfidfWeight);
 				}
+				writer.write(codeReader.document(i).get("fullClassName")+"\t"+docLength+";"+buf.toString()+"\n");
 				codeVectorList.put(codeReader.document(i).get("fullClassName"), documentVec);
 			}
 		}
+		writer.close();
 		System.out.println(sum);
 		
 		Directory bugDir = FSDirectory.open(Paths.get(bugCorpusDirPath,"index"));
@@ -88,9 +115,11 @@ public class LuceneVectorCreator {
 				while((str=iter.next())!=null){
 					String term=str.utf8ToString();
 					int termFreq = (int)iter.totalTermFreq();
-					int docFreq = codeReader.docFreq(new Term("bugInformation",term));
-					double tfidfWeight = (Math.log(termFreq)+1) * Math.log((codeNum+0.5d)/(docFreq+0.5d));
-					documentVec.put(term, tfidfWeight);
+					int docFreq = codeReader.docFreq(new Term("content",term));
+					if(docFreq!=0){
+						double tfidfWeight = (Math.log(termFreq)+1) * Math.log((codeNum)/(docFreq));
+						documentVec.put(term, tfidfWeight);
+					}
 				}
 				bugVectorList.put(bugReader.document(i).get("bugID"), documentVec);
 			}
@@ -125,14 +154,13 @@ public class LuceneVectorCreator {
 		for(Entry<String, Double> entry: map2.entrySet()){
 			length2+=entry.getValue()*entry.getValue();
 			if(map1.containsKey(entry.getKey())){
-				intersect+=entry.getValue()+map1.get(entry.getKey());
+				intersect+=entry.getValue()*map1.get(entry.getKey());
 			}
 		}
 		return intersect/Math.sqrt(length1*length2);
 	}
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
+	
 	}
 
 }

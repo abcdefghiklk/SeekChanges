@@ -20,6 +20,6 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.text_3.4.0.v20080605-1800.jar"/>
 	<classpathentry kind="lib" path="lib/poi-3.9.jar"/>
 	<classpathentry kind="lib" path="lib/preferences-3.2.100-v20070522.jar"/>
-	<classpathentry kind="lib" path="lib/wvtool.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ql29/Documents/EClipse/SeekChanges/BRTracer/lib/wvtool_temp.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

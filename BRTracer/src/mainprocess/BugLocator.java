@@ -44,6 +44,8 @@ public class BugLocator {
 		String simMatFilePath=Paths.get(Config.getInstance().getIntermediateDir(), "revisedVSMScore").toString();
 		RevisedVSMScore.generate(bugVecFilePath, codeVecFilePath, codeLengthFilePath,simMatFilePath);
 		
+		
+		
 		String fixedFilePath=Paths.get(bugCorpusDirPath, "fixedFiles").toString();
 		//evaluations
 		if(Config.getInstance().getMRRUsed()){
@@ -67,7 +69,7 @@ public class BugLocator {
 	}
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		String rootDirPath="C:/Users/dell/Documents/EClipse";
+		String rootDirPath="C:/Users/ql29/Documents/EClipse";
 		String configFilePath=Paths.get(rootDirPath, "property").toString();
 		String datasetsDirPath=Paths.get(rootDirPath,"Dataset").toString();
 		String intermediateDirPath=Paths.get(rootDirPath, "Corpus").toString();
@@ -87,7 +89,7 @@ public class BugLocator {
 			bugLogFilePath=Paths.get(datasetsDirPath, "SWTBugRepository.xml").toString();
 		}
 		else if(projectName=="aspectj"){
-			datasetDirPath=Paths.get(datasetsDirPath, "aspect").toString();
+			datasetDirPath=Paths.get(datasetsDirPath, "aspectj").toString();
 			bugLogFilePath=Paths.get(datasetsDirPath, "AspectJBugRepository.xml").toString();
 		}
 		else if(projectName=="eclipse"){

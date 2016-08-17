@@ -456,17 +456,49 @@ public class MatrixUtil {
 //		String excelFilePath="C:/Users/dell/Documents/EClipse/experimentResult/output.xls";
 //		String experimentResultDir="C:/Users/dell/Documents/EClipse/experimentResult/evalResult";
 //		FileEvaluate.exportEvaluationResult2Excel(experimentResultDir, excelFilePath);
-		ArrayList<Matrix> strs=new ArrayList<Matrix>();
-		strs.add(Matrix.identity(3, 3));
-		strs.add(Matrix.identity(2, 2));
-//		for(Matrix m:strs){
-//			m.set(0, 0, 3);
-//		}
-		for(Matrix str:strs){
-			System.out.println(str.get(0, 0));
+		String vocabularyFile = "C:/Users/ql29/Documents/EClipse/BugLocatorTool/tmp/Wordlist.txt";
+		String termInfoFile = "C:/Users/ql29/Documents/EClipse/BugLocatorTool/tmp/TermInfo.txt";
+		String outputFile = "C:/Users/ql29/Documents/EClipse/BugLocatorTool/tmp/output.txt";
+		
+		BufferedReader reader = new BufferedReader(new FileReader(vocabularyFile));
+		String line = "";
+		ArrayList<String> vocabulary = new ArrayList<String>();
+		while((line= reader.readLine())!=null){
+			String [] strs=line.split("\t");
+			vocabulary.add(strs[0]);
+//			System.out.println(strs[1]);
 		}
+		reader.close();
 		
 		
+		StringBuffer buf=new StringBuffer();
+		reader = new BufferedReader(new FileReader(termInfoFile));
+		line = "";
+		while((line= reader.readLine())!=null){
+			String [] strs=line.split("\t");
+			for(int i=1;i<strs.length;i++){
+				if(i==1){
+					
+					String termID = strs[i].substring(strs[i].lastIndexOf(";")+1, strs[i].lastIndexOf(":"));
+					String term = vocabulary.get(Integer.parseInt(termID));
+					strs[i]=strs[i].replaceFirst(termID, term);
+//					System.out.println(term);
+				}
+				else{
+					String termID = strs[i].substring(0, strs[i].lastIndexOf(":"));
+					String term = vocabulary.get(Integer.parseInt(termID));
+					strs[i]=strs[i].replaceFirst(termID, term);
+				}
+			}
+			line = String.join("\t", strs);
+			buf.append(line+"\n");
+		}
+		FileWriter writer = new FileWriter(outputFile);
+		writer.write(buf.toString());
+		writer.close();
+		
+		
+		reader.close();
 //		String dirPath="C:/Users/dell/Documents/EClipse/ApacheDatasets/WICKET-6.1.0";
 //		VSM4UnifiedLocation.mergeBugReport(dirPath);
 	}

@@ -25,7 +25,7 @@ public class MainDownloadSVNCommits
 		String outputFolder="TestCases/Output/jEdit/";
 		
 		DownloadSVNCommits downloadSVNCommits=new DownloadSVNCommits(
-				"https://jedit.svn.sourceforge.net/svnroot/jedit",
+				"https://svn.code.sf.net/p/jedit/svn/jEdit",
 				"12212",
 				"12213",
 				outputFolder,
@@ -41,11 +41,12 @@ public class MainDownloadSVNCommits
 
 	public static void main(String[] args) throws Exception
 	{
-		testDownloadSVNCommitsArgoUML();
+//		testDownloadSVNCommitsArgoUML();
 		testDownloadSVNCommitsjEdit();
-		if (1==1)
+
+		if(1==1){
 			return;
-		
+		}
 		args=new String[5];
 		args[0]="http://argouml.tigris.org/svn/argouml/trunk";
 		args[1]="15245";

@@ -33,7 +33,7 @@ public class FileEvaluate {
 				String bugID = strs[0];
 				String rankStr= strs[2];
 				if(map.containsKey(bugID)){
-					String newStr=map.get(bugID)+rankStr+" ";
+					String newStr=map.get(bugID)+" "+rankStr;
 					map.put(bugID, newStr);
 				}
 				else{
